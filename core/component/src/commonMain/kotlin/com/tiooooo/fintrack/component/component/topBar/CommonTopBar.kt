@@ -14,7 +14,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import com.lm.kmp.core.component.theme.textMedium20
+import com.tiooooo.fintrack.component.theme.textMedium20
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -18,8 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.lm.kmp.core.component.theme.MEDIUM_PADDING
-import com.lm.kmp.core.component.theme.textMedium10
+import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
+import com.tiooooo.fintrack.component.theme.textMedium10
 
 @Composable
 fun BottomNavItem(

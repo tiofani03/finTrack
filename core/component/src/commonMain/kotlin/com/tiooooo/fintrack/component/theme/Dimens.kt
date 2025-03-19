@@ -1,4 +1,4 @@
-package com.lm.kmp.core.component.theme
+package com.tiooooo.fintrack.component.theme
 
 import androidx.compose.ui.unit.dp
 
@@ -10,5 +10,6 @@ val LARGE_PADDING = 20.dp
 val EXTRA_LARGE_PADDING = 24.dp
 val HUGE_PADDING = 32.dp
 val EXTRA_EXTRA_HUGE_PADDING = 48.dp
+val SYSTEM_UI_PADDING = 54.dp
 
 val BUTTON_SIZE = 48.dp
