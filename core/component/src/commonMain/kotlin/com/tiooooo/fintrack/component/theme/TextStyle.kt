@@ -1,4 +1,4 @@
-package com.lm.kmp.core.component.theme
+package com.tiooooo.fintrack.component.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
@@ -51,5 +51,12 @@ fun textMedium20() = TextStyle(
 fun textMedium22() = TextStyle(
     fontFamily = JakartaSansFamily(),
     fontSize = 22.sp,
+    fontWeight = FontWeight.Normal
+)
+
+@Composable
+fun textMedium24() = TextStyle(
+    fontFamily = JakartaSansFamily(),
+    fontSize = 24.sp,
     fontWeight = FontWeight.Normal
 )
