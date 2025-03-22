@@ -10,10 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium18
+import com.tiooooo.fintrack.pages.dashboard.DashboardRoute
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_login_apple
 import fintrack.composeapp.generated.resources.ic_login_facebook
@@ -23,6 +26,7 @@ import fintrack.composeapp.generated.resources.ic_login_google
 fun OnboardBottomSheet(
     modifier: Modifier = Modifier
 ) {
+    val navigator = LocalNavigator.currentOrThrow
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -60,7 +64,7 @@ fun OnboardBottomSheet(
             OnboardButton(
                 painter = Res.drawable.ic_login_facebook,
                 onCardClicked = {
-
+                    navigator.replaceAll(DashboardRoute)
                 }
             )
         }

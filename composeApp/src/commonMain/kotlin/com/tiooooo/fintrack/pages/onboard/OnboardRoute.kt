@@ -34,16 +34,18 @@ import com.tiooooo.fintrack.component.theme.textMedium20
 import com.tiooooo.fintrack.pages.onboard.components.OnBoardStories
 import com.tiooooo.fintrack.pages.onboard.components.OnboardBottomSheet
 import fintrack.composeapp.generated.resources.Res
-import fintrack.composeapp.generated.resources.compose_multiplatform
+import fintrack.composeapp.generated.resources.ic_onboard_data
+import fintrack.composeapp.generated.resources.ic_onboard_happy
+import fintrack.composeapp.generated.resources.ic_onboard_transfer
 import org.jetbrains.compose.resources.painterResource
 
 object OnboardRoute : Screen {
     @Composable
     override fun Content() {
         val listOfImages = listOf(
-            Res.drawable.compose_multiplatform,
-            Res.drawable.compose_multiplatform,
-            Res.drawable.compose_multiplatform
+            Res.drawable.ic_onboard_transfer,
+            Res.drawable.ic_onboard_data,
+            Res.drawable.ic_onboard_happy
         )
 
         val listOfText = listOf(
@@ -77,23 +79,12 @@ object OnboardRoute : Screen {
                     Box(modifier = Modifier.fillMaxSize()) {
                         Image(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
+                                .fillMaxHeight(0.55f)
                                 .align(Alignment.Center)
                                 .padding(horizontal = EXTRA_LARGE_PADDING)
                                 .padding(bottom = MEDIUM_PADDING),
                             painter = painterResource(listOfImages[index]),
                             contentDescription = null,
-                        )
-                        Spacer(
-                            modifier = Modifier
-                                .height(250.dp)
-                                .width(250.dp)
-                                .background(
-                                    color = Color.White.copy(alpha = 0.2f),
-                                    shape = RoundedCornerShape(125.dp)
-                                )
-                                .align(Alignment.Center)
                         )
                         Column(
                             modifier = Modifier

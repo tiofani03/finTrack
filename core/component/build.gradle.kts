@@ -55,7 +55,8 @@ kotlin {
             api(libs.adaptive)
             api(libs.adaptive.layout)
             api(libs.adaptive.navigation)
-            implementation("org.jetbrains.compose.material3:material3-window-size-class:1.7.3")
+            implementation(libs.material3.window.size.class1)
+            api(libs.pullrefresh)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
