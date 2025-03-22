@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
@@ -14,12 +15,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import com.tiooooo.fintrack.component.theme.LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun BottomNavItem(
@@ -33,6 +38,12 @@ fun BottomNavItem(
         animationSpec = tween(durationMillis = 400)
     )
 
+    val painter = remember {
+        mutableStateOf(bottomNavModel.iconNotSelected)
+    }.apply {
+        value = if (isSelected) bottomNavModel.iconSelected else bottomNavModel.iconNotSelected
+    }.value
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -41,21 +52,27 @@ fun BottomNavItem(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             )
-            .padding(MEDIUM_PADDING),
+            .padding(LARGE_PADDING),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            modifier = Modifier.fillMaxWidth(),
-            imageVector = if (isSelected) bottomNavModel.iconSelected else bottomNavModel.iconNotSelected,
+            modifier = Modifier.height(LARGE_PADDING),
+            painter = painterResource(painter),
             contentDescription = bottomNavModel.label,
             tint = backgroundColor
         )
         Text(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier
+                .wrapContentWidth()
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
             text = bottomNavModel.label,
             color = backgroundColor,
             style = textMedium10(),
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
