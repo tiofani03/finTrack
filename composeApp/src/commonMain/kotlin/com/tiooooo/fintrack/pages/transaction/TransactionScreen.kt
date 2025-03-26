@@ -1,20 +1,22 @@
 package com.tiooooo.fintrack.pages.transaction
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,25 +24,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
-import com.tiooooo.fintrack.component.theme.textMedium22
 import com.tiooooo.fintrack.pages.detail.DetailRoute
-import fintrack.composeapp.generated.resources.Res
-import fintrack.composeapp.generated.resources.ic_transaction_chart
+import com.tiooooo.fintrack.pages.transaction.components.CardTransaction
+import com.tiooooo.fintrack.pages.transaction.components.CardTransactionDate
+import com.tiooooo.fintrack.pages.transaction.components.TransactionPageTitle
+import com.tiooooo.fintrack.pages.transaction.components.TransactionSearchBar
+import com.tiooooo.fintrack.pages.transaction.components.calculateTotal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TransactionScreen(
     modifier: Modifier = Modifier,
@@ -48,43 +48,51 @@ fun TransactionScreen(
 ) {
     val homeList by transactionScreenModel.transactionList.collectAsState()
     val listState by transactionScreenModel.lazyListState.collectAsState()
+
     var isRefreshing by remember { mutableStateOf(false) }
+
     val navigator = LocalNavigator.currentOrThrow
+    val groupedTransactions = homeList.groupBy { it.date }
+
+    val scrollOffset = listState.firstVisibleItemIndex
+    val scrollOffsetPx = listState.firstVisibleItemScrollOffset
+
+    val isScrolled = scrollOffset > 0 || scrollOffsetPx > 0
+    var searchQuery by remember { mutableStateOf("") }
+
+    val offsetY by animateDpAsState(
+        targetValue = 0.dp,
+        animationSpec = tween(
+            durationMillis = 300,
+            easing = LinearEasing
+        )
+    )
 
     Column(
         modifier = modifier,
     ) {
-        Box(
-            modifier = Modifier.wrapContentSize()
+        AnimatedVisibility(
+            visible = !isScrolled,
+            enter = fadeIn(tween(300)),
+            exit = fadeOut(tween(300))
         ) {
-            Spacer(
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(0.13f)
-                    .background(Color.Transparent),
+            TransactionPageTitle(
+                modifier = Modifier.wrapContentSize(),
+                onChartClicked = {
+
+                }
             )
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = MEDIUM_PADDING),
-                textAlign = TextAlign.Start,
-                text = "Transaksi",
-                style = textMedium22().copy(
-                    fontWeight = FontWeight.ExtraBold
-                ),
-            )
-            IconButton(
-                onClick = {},
-                modifier = Modifier.align(Alignment.CenterEnd).padding(
-                    top = MEDIUM_PADDING,
-                    end = MEDIUM_PADDING,
-                ),
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_transaction_chart),
-                    contentDescription = null,
-                )
-            }
         }
+
+        TransactionSearchBar(
+            modifier = Modifier.fillMaxWidth(),
+            offsetY = offsetY,
+            searchQuery = searchQuery,
+            onValueChange = { searchQuery = it }
+        )
         PullToRefreshBox(
+            modifier = Modifier
+                .weight(1f),
             isRefreshing = isRefreshing,
             onRefresh = {
                 isRefreshing = true
@@ -95,24 +103,50 @@ fun TransactionScreen(
                     }
                 }
             },
-            modifier = Modifier
-                .weight(1f)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = listState
             ) {
-                items(homeList.size) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = SMALL_PADDING)
-                            .clickable {
-                                navigator.push(DetailRoute(homeList.get(index = it).id.toString()))
+                groupedTransactions.forEach { (date, transactions) ->
+                    val totalAmount = transactions.calculateTotal()
+                    val transactionCount = transactions.size
+
+                    stickyHeader {
+                        CardTransactionDate(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    navigator.push(DetailRoute(date))
+                                }
+                                .background(MaterialTheme.colorScheme.surface)
+                                .padding(
+                                    start = MEDIUM_PADDING,
+                                    end = SMALL_PADDING,
+                                    top = MEDIUM_PADDING,
+                                    bottom = SMALL_PADDING
+                                ),
+                            date = date,
+                            transactionCount = transactionCount,
+                            totalAmount = totalAmount,
+                        )
+                    }
+
+                    items(transactions.size) { index ->
+                        CardTransaction(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    navigator.push(DetailRoute(transactions[index].date))
+                                }
+                                .padding(SMALL_PADDING)
+                                .padding(bottom = SMALL_PADDING),
+                            transactionItem = transactions[index],
+                            onTransactionClicked = {
+                                navigator.push(DetailRoute(it.date))
                             }
-                            .padding(MEDIUM_PADDING),
-                        text = homeList.get(index = it).purpose
-                    )
+                        )
+                    }
                 }
             }
         }
