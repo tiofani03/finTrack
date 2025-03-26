@@ -48,11 +48,10 @@ class TransactionScreenModel : ScreenModel, ScrollStateManager {
         val random = Random.Default
         val transactionItems = mutableListOf<TransactionItem>()
         val purposes =
-            listOf("Shopping", "Food", "Transport", "Entertainment", "Salary", "Investment")
-        val walletNames = listOf("Cash", "Bank", "Crypto", "Gift Card")
+            listOf("Makan", "Transportasi", "Lainnya", "Transfer", "Gaji", "Investasi")
+        val walletNames = listOf("BCA", "Jago", "Dompet", "Tabungan")
         val dates = listOf(
-            "2024-12-01", "2024-12-02", "2024-12-03", "2024-12-04", "2024-12-05",
-            "2024-12-06", "2024-12-07", "2024-12-08", "2024-12-09", "2024-12-10"
+            "23 Mar 2025", "24 Mar 2025", "25 Mar 2025",
         )
 
 
@@ -63,8 +62,8 @@ class TransactionScreenModel : ScreenModel, ScrollStateManager {
                 date = dates[random.nextInt(dates.size)],
                 purpose = purposes[random.nextInt(purposes.size)],
                 walletName = walletNames[random.nextInt(walletNames.size)],
-                type = random.nextInt(2) + 1,
-                amount = random.nextInt(5000) + 10
+                type = random.nextInt(2),
+                amount = random.nextInt(10000000) + 10
             )
 
             transactionItems.add(transactionItem)

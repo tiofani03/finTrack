@@ -38,7 +38,7 @@ fun DetailScreen(
         modifier = modifier,
         topBarTitle = itemId,
         onBackClicked = {
-            navigator.replaceAll(DashboardRoute)
+            navigator.pop()
         }
     ) {
         Box(
