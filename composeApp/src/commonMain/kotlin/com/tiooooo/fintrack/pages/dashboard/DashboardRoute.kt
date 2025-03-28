@@ -8,12 +8,14 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.tiooooo.fintrack.pages.home.HomeScreenModel
 import com.tiooooo.fintrack.pages.settings.SettingScreenModel
 import com.tiooooo.fintrack.pages.transaction.TransactionScreenModel
+import com.tiooooo.fintrack.pages.wallet.WalletScreenModel
 
 object DashboardRoute : Screen {
     @Composable
     override fun Content() {
         val dashboardScreenModel = rememberScreenModel { DashboardScreenModel() }
         val homeScreenModel = rememberScreenModel { HomeScreenModel() }
+        val walletScreenModel = rememberScreenModel { WalletScreenModel() }
         val transactionScreenModel = rememberScreenModel { TransactionScreenModel() }
         val settingScreenModel = rememberScreenModel { SettingScreenModel() }
 
@@ -21,6 +23,7 @@ object DashboardRoute : Screen {
             modifier = Modifier.fillMaxSize(),
             screenModel = dashboardScreenModel,
             homeScreenModel = homeScreenModel,
+            walletScreenModel = walletScreenModel,
             transactionScreenModel = transactionScreenModel,
             settingScreenModel = settingScreenModel,
         )

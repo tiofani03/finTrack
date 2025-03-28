@@ -38,13 +38,15 @@ import com.tiooooo.fintrack.pages.settings.SettingScreen
 import com.tiooooo.fintrack.pages.settings.SettingScreenModel
 import com.tiooooo.fintrack.pages.transaction.TransactionScreen
 import com.tiooooo.fintrack.pages.transaction.TransactionScreenModel
-import com.tiooooo.fintrack.pages.wallet.CollapsingEffectScreen
+import com.tiooooo.fintrack.pages.wallet.WalletScreen
+import com.tiooooo.fintrack.pages.wallet.WalletScreenModel
 
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
     screenModel: DashboardScreenModel,
     homeScreenModel: HomeScreenModel,
+    walletScreenModel: WalletScreenModel,
     transactionScreenModel: TransactionScreenModel,
     settingScreenModel: SettingScreenModel,
 ) {
@@ -124,11 +126,11 @@ fun DashboardScreen(
                 )
             }
             BottomNavTarget.WALLET -> {
-                CollapsingEffectScreen(
+                WalletScreen(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
-                    transactionScreenModel = transactionScreenModel,
+                        .padding(bottom = paddingValues.calculateBottomPadding()),
+                    walletScreenModel = walletScreenModel,
                 )
             }
 
