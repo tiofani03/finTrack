@@ -1,6 +1,7 @@
 package com.tiooooo.fintrack.pages.wallet
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,9 +24,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.EXTRA_SMALL_PADDING
+import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.primaryDark
 import com.tiooooo.fintrack.component.theme.primaryLight
@@ -99,7 +102,8 @@ fun WalletScreen(
                 LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(SMALL_PADDING),
+                        .padding(horizontal = 12.dp)
+                        .padding(top = SMALL_PADDING),
                     columns = GridCells.Fixed(2),
                     state = listState,
                     contentPadding = PaddingValues(

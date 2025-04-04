@@ -20,7 +20,7 @@ fun BaseScaffold(
     content: @Composable (padding: PaddingValues) -> Unit,
 ) {
     Scaffold(
-        modifier = modifier.background(onLightBackground),
+        modifier = modifier,
         topBar = {
             if (topBarTitle.isNotEmpty() || topBarEnable) {
                 CommonTopBar(

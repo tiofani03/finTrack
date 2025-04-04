@@ -1,5 +1,7 @@
 package com.tiooooo.fintrack.pages.wallet.components
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,10 +12,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +35,7 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium14
+import com.tiooooo.fintrack.component.theme.textMedium16
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -41,12 +44,15 @@ fun WalletCardItem(
     modifier: Modifier = Modifier,
     walletItem: WalletItem,
 ) {
-    Card(
+    OutlinedCard(
         modifier = modifier,
-        shape = RoundedCornerShape(SMALL_PADDING)
+        shape = RoundedCornerShape(SMALL_PADDING),
+        border = BorderStroke(0.dp, MaterialTheme.colorScheme.surface),
     ) {
         Column(
-            modifier = Modifier.padding(MEDIUM_PADDING)
+            modifier = Modifier
+                .clickable { }
+                .padding(MEDIUM_PADDING)
         ) {
             ElevatedCard(
                 modifier = Modifier
@@ -77,7 +83,7 @@ fun WalletCardItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 text = "Di-update 12 Mar 18.30",
-                style = textMedium10().copy(fontWeight = FontWeight.Light)
+                style = textMedium10().copy(fontWeight = FontWeight.Thin),
             )
             Text(
                 modifier = Modifier
@@ -86,8 +92,8 @@ fun WalletCardItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 text = walletItem.amount,
-                style = textMedium14().copy(
-                    fontWeight = FontWeight.Bold,
+                style = textMedium16().copy(
+                    fontWeight = FontWeight.ExtraBold,
                 )
             )
         }
@@ -99,9 +105,10 @@ fun WalletCardItem(
 fun WalletCardAddItem(
     modifier: Modifier = Modifier,
 ) {
-    Card(
+    OutlinedCard(
         modifier = modifier,
-        shape = RoundedCornerShape(SMALL_PADDING)
+        shape = RoundedCornerShape(SMALL_PADDING),
+        border = BorderStroke(0.dp, MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier.padding(MEDIUM_PADDING),
@@ -144,7 +151,7 @@ data class WalletItem(
     val id: Int,
     val name: String,
     val amount: String,
-    val amountDouble : Double,
+    val amountDouble: Double,
     val color: Color,
     val image: DrawableResource,
 )

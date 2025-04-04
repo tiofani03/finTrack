@@ -19,7 +19,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.tiooooo.fintrack.component.theme.LARGE_PADDING
@@ -34,7 +33,9 @@ fun BottomNavItem(
     onClick: () -> Unit
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.LightGray,
+        targetValue = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(
+            alpha = 0.6f
+        ),
         animationSpec = tween(durationMillis = 400)
     )
 

@@ -10,13 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.FloatingActionButtonElevation
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -104,11 +108,14 @@ fun DashboardScreen(
                         modifier = Modifier
                             .align(Alignment.Center)
                             .offset(y = (-36).dp)
-                            .clip(CircleShape)
+                            .clip(CircleShape),
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        elevation = FloatingActionButtonDefaults.elevation(defaultElevation = MEDIUM_PADDING),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "Add"
+                            contentDescription = "Add",
+                            modifier = Modifier.size(32.dp),
                         )
                     }
                 }

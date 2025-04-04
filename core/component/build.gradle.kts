@@ -57,6 +57,7 @@ kotlin {
             api(libs.adaptive.navigation)
             implementation(libs.material3.window.size.class1)
             api(libs.pullrefresh)
+            api("network.chaintech:cmptoast:1.0.4")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
