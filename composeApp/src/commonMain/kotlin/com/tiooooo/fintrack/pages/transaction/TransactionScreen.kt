@@ -1,11 +1,10 @@
 package com.tiooooo.fintrack.pages.transaction
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,10 +14,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,17 +31,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.tiooooo.fintrack.component.component.topBar.BasicTopBarTitle
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.pages.detail.DetailRoute
 import com.tiooooo.fintrack.pages.transaction.components.CardTransaction
 import com.tiooooo.fintrack.pages.transaction.components.CardTransactionDate
-import com.tiooooo.fintrack.pages.transaction.components.TransactionPageTitle
+import com.tiooooo.fintrack.pages.transaction.components.TransactionFilterBottomSheet
 import com.tiooooo.fintrack.pages.transaction.components.TransactionSearchBar
 import com.tiooooo.fintrack.pages.transaction.components.calculateTotal
+import fintrack.composeapp.generated.resources.Res
+import fintrack.composeapp.generated.resources.ic_transaction_chart
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import multiplatform.network.cmptoast.ToastDuration
+import multiplatform.network.cmptoast.ToastGravity
+import multiplatform.network.cmptoast.showToast
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -48,6 +58,7 @@ fun TransactionScreen(
 ) {
     val homeList by transactionScreenModel.transactionList.collectAsState()
     val listState by transactionScreenModel.lazyListState.collectAsState()
+    var showSheet by remember { mutableStateOf(false) }
 
     var isRefreshing by remember { mutableStateOf(false) }
 
@@ -69,26 +80,33 @@ fun TransactionScreen(
     )
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(),
     ) {
         AnimatedVisibility(
             visible = !isScrolled,
-            enter = fadeIn(tween(300)),
-            exit = fadeOut(tween(300))
         ) {
-            TransactionPageTitle(
-                modifier = Modifier.wrapContentSize(),
-                onChartClicked = {
-
+            BasicTopBarTitle(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(end = MEDIUM_PADDING),
+                title = "Transaksi",
+                onIconClicked = {},
+                iconContent = {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_transaction_chart),
+                        contentDescription = null,
+                    )
                 }
             )
         }
 
         TransactionSearchBar(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(end = MEDIUM_PADDING),
             offsetY = offsetY,
             searchQuery = searchQuery,
-            onValueChange = { searchQuery = it }
+            onValueChange = { searchQuery = it },
+            onFilterClicked = { showSheet = true }
         )
         PullToRefreshBox(
             modifier = Modifier
@@ -104,22 +122,66 @@ fun TransactionScreen(
                 }
             },
         ) {
+//            LazyColumn(
+//                modifier = Modifier.fillMaxSize(),
+//                state = listState
+//            ) {
+//                groupedTransactions.forEach { (date, transactions) ->
+//                    val totalAmount = transactions.calculateTotal()
+//                    val transactionCount = transactions.size
+//
+//                    stickyHeader {
+//                        CardTransactionDate(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .clickable {
+//                                    navigator.push(DetailRoute(date))
+//                                }
+//                                .background(MaterialTheme.colorScheme.surface)
+//                                .padding(
+//                                    start = MEDIUM_PADDING,
+//                                    end = SMALL_PADDING,
+//                                    top = MEDIUM_PADDING,
+//                                    bottom = SMALL_PADDING
+//                                ),
+//                            date = date,
+//                            transactionCount = transactionCount,
+//                            totalAmount = totalAmount,
+//                        )
+//                    }
+//
+//                    items(transactions.size) { index ->
+//                        CardTransaction(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .clickable {
+//                                    navigator.push(DetailRoute(transactions[index].date))
+//                                }
+//                                .padding(SMALL_PADDING)
+//                                .padding(bottom = SMALL_PADDING),
+//                            transactionItem = transactions[index],
+//                            onTransactionClicked = {
+//                                navigator.push(DetailRoute(it.date))
+//                            }
+//                        )
+//                    }
+//                }
+//            }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = listState
             ) {
                 groupedTransactions.forEach { (date, transactions) ->
-                    val totalAmount = transactions.calculateTotal()
-                    val transactionCount = transactions.size
-
-                    stickyHeader {
+                    stickyHeader(key = date) {
+                        val totalAmount = remember(transactions) { transactions.calculateTotal() }
+                        val transactionCount = remember(transactions) { transactions.size }
                         CardTransactionDate(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
                                     navigator.push(DetailRoute(date))
                                 }
-                                .background(MaterialTheme.colorScheme.surface)
+                                .background(MaterialTheme.colorScheme.background)
                                 .padding(
                                     start = MEDIUM_PADDING,
                                     end = SMALL_PADDING,
@@ -132,16 +194,16 @@ fun TransactionScreen(
                         )
                     }
 
-                    items(transactions.size) { index ->
+                    itemsIndexed(transactions, key = { _, item -> item.id }) { _, transaction ->
                         CardTransaction(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    navigator.push(DetailRoute(transactions[index].date))
+                                    navigator.push(DetailRoute(transaction.date))
                                 }
                                 .padding(SMALL_PADDING)
                                 .padding(bottom = SMALL_PADDING),
-                            transactionItem = transactions[index],
+                            transactionItem = transaction,
                             onTransactionClicked = {
                                 navigator.push(DetailRoute(it.date))
                             }
@@ -149,6 +211,22 @@ fun TransactionScreen(
                     }
                 }
             }
+
+        }
+    }
+
+    if (showSheet) {
+        TransactionFilterBottomSheet(
+            onClick = { text ->
+                showToast(
+                    message = "This is Short Toast $text",
+                    gravity = ToastGravity.Top,
+                    duration = ToastDuration.Short
+                )
+                showSheet = false
+            }
+        ) {
+            showSheet = false
         }
     }
 }

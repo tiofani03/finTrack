@@ -1,8 +1,8 @@
 package com.tiooooo.fintrack.component.utils
 
-import platform.Foundation.NSNumberFormatter
-import platform.Foundation.NSNumber
 import platform.Foundation.NSLocale
+import platform.Foundation.NSNumber
+import platform.Foundation.NSNumberFormatter
 import platform.Foundation.numberWithDouble
 
 

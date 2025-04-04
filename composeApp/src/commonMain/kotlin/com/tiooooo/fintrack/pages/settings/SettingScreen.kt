@@ -1,30 +1,59 @@
 package com.tiooooo.fintrack.pages.settings
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.automirrored.filled.HelpCenter
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.tiooooo.fintrack.component.base.BaseScaffold
+import com.tiooooo.fintrack.component.component.topBar.BasicTopBarTitle
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
-import com.tiooooo.fintrack.pages.detail.DetailRoute
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.tiooooo.fintrack.component.theme.textMedium10
+import com.tiooooo.fintrack.component.theme.textMedium14
+import com.tiooooo.fintrack.component.theme.textMedium16
+import fintrack.composeapp.generated.resources.Res
+import fintrack.composeapp.generated.resources.ic_login_google
+import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
     modifier: Modifier = Modifier,
@@ -32,41 +61,192 @@ fun SettingScreen(
 ) {
     val homeList by settingScreenModel.settingList.collectAsState()
     val listState by settingScreenModel.lazyListState.collectAsState()
-    var isRefreshing by remember { mutableStateOf(false) }
     val navigator = LocalNavigator.currentOrThrow
 
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            isRefreshing = true
-            settingScreenModel.refreshData {
-                isRefreshing = false
-                CoroutineScope(Dispatchers.Main).launch {
-                    listState.scrollToItem(0)
-                }
-            }
-        },
-        modifier = modifier
-    ) {
-        if (isRefreshing){
-
-        }
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState
+    BaseScaffold(
+        modifier = modifier,
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding()),
         ) {
-            items(homeList.size) {
-                Text(
+            BasicTopBarTitle(
+                modifier = Modifier
+                    .wrapContentSize(),
+                title = "Settings",
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+                state = listState
+            ) {
+                item { ProfileHeader(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = SMALL_PADDING)
-                        .clickable {
-                            navigator.push(DetailRoute(homeList.get(index = it)))
-                        }
-                        .padding(MEDIUM_PADDING),
-                    text = homeList.get(index = it)
+                        .padding(horizontal = MEDIUM_PADDING)
+                ) }
+                item { SectionList(title = "Akun", items = getDummyAccountItems()) }
+                item { SectionList(title = "Bantuan", items = getDummyHelpItems()) }
+                item { SectionList(title = "Kebijakan dan Privasi", items = getTermAndCondition()) }
+                item { Spacer(modifier = Modifier.height(80.dp)) }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun ProfileHeader(
+    modifier: Modifier = Modifier,
+) {
+    OutlinedCard(
+        modifier = modifier,
+        shape = RoundedCornerShape(SMALL_PADDING),
+        border = BorderStroke(0.dp, MaterialTheme.colorScheme.surface),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MEDIUM_PADDING)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(MEDIUM_PADDING))
+                    .padding(MEDIUM_PADDING),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(Res.drawable.ic_login_google),
+                    contentDescription = "Profile Picture",
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
+                )
+                Spacer(modifier = Modifier.width(MEDIUM_PADDING))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Tio Fani",
+                        style = textMedium16().copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                    )
+                    Text(
+                        text = "0821-3713-8344",
+                        style = textMedium14().copy(
+                            fontWeight = FontWeight.Light,
+                        )
+                    )
+                }
+
+                Text(
+                    text = "Ubah",
+                    color = Color.Blue,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    modifier = Modifier.clickable { /* TODO: Handle click */ }
                 )
             }
         }
     }
 }
+
+@Composable
+fun LoyaltyCodeSection() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = MEDIUM_PADDING)
+            .clip(RoundedCornerShape(MEDIUM_PADDING))
+            .background(Color(0xFFF6F6F6))
+            .padding(MEDIUM_PADDING),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Default.QrCodeScanner, contentDescription = "Barcode")
+            Spacer(modifier = Modifier.width(SMALL_PADDING))
+            Text(text = "Loyalty Code", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        }
+    }
+}
+
+@Composable
+fun SectionList(title: String, items: List<ProfileItem>) {
+    Column(
+        modifier = Modifier
+    ) {
+        Text(
+            modifier = Modifier.padding(start = MEDIUM_PADDING, top = SMALL_PADDING),
+            text = title,
+            style = textMedium16().copy(
+                fontWeight = FontWeight.Bold
+            )
+        )
+        Spacer(modifier = Modifier.height(SMALL_PADDING))
+
+        items.forEach { item ->
+            ProfileListItem(item)
+        }
+    }
+}
+
+@Composable
+fun ProfileListItem(item: ProfileItem) {
+    Row(
+        modifier = Modifier
+            .clickable {
+
+            }
+            .fillMaxWidth()
+            .padding(MEDIUM_PADDING),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(imageVector = item.icon, contentDescription = item.title, tint = Color.Black)
+        Spacer(modifier = Modifier.width(MEDIUM_PADDING))
+
+        Text(
+            text = item.title,
+            style = textMedium14().copy(
+                fontWeight = FontWeight.Light
+            ),
+            modifier = Modifier.weight(1f)
+        )
+
+        if (item.actionText != null) {
+            Text(
+                text = item.actionText,
+                style = textMedium10().copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                ),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(MEDIUM_PADDING))
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(horizontal = MEDIUM_PADDING, vertical = SMALL_PADDING)
+            )
+        } else {
+            Icon(imageVector = Icons.Default.ChevronRight, contentDescription = "Next")
+        }
+    }
+}
+
+
+data class ProfileItem(val title: String, val icon: ImageVector, val actionText: String? = null)
+
+fun getDummyAccountItems() = listOf(
+    ProfileItem("Akun Premium", Icons.Default.Star, "Upgrade"),
+)
+
+fun getDummyHelpItems() = listOf(
+    ProfileItem("Pusat Bantuan", Icons.AutoMirrored.Filled.Help),
+    ProfileItem("Tanya dan Jawab", Icons.AutoMirrored.Filled.HelpCenter)
+)
+
+fun getTermAndCondition() = listOf(
+    ProfileItem("Ketentuan Layanan", Icons.Default.Info),
+    ProfileItem("Kebijakan Privasi", Icons.Default.Key),
+)

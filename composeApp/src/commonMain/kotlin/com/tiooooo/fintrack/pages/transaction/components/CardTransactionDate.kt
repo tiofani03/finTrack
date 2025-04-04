@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import com.tiooooo.fintrack.component.theme.EXTRA_SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium14
@@ -40,6 +41,7 @@ fun CardTransactionDate(
                 )
             )
             Text(
+                modifier = Modifier.padding(top = EXTRA_SMALL_PADDING),
                 text = "$transactionCount Transaksi",
                 style = textMedium10().copy(
                     fontWeight = FontWeight.ExtraLight,
