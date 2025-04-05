@@ -122,51 +122,6 @@ fun TransactionScreen(
                 }
             },
         ) {
-//            LazyColumn(
-//                modifier = Modifier.fillMaxSize(),
-//                state = listState
-//            ) {
-//                groupedTransactions.forEach { (date, transactions) ->
-//                    val totalAmount = transactions.calculateTotal()
-//                    val transactionCount = transactions.size
-//
-//                    stickyHeader {
-//                        CardTransactionDate(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .clickable {
-//                                    navigator.push(DetailRoute(date))
-//                                }
-//                                .background(MaterialTheme.colorScheme.surface)
-//                                .padding(
-//                                    start = MEDIUM_PADDING,
-//                                    end = SMALL_PADDING,
-//                                    top = MEDIUM_PADDING,
-//                                    bottom = SMALL_PADDING
-//                                ),
-//                            date = date,
-//                            transactionCount = transactionCount,
-//                            totalAmount = totalAmount,
-//                        )
-//                    }
-//
-//                    items(transactions.size) { index ->
-//                        CardTransaction(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .clickable {
-//                                    navigator.push(DetailRoute(transactions[index].date))
-//                                }
-//                                .padding(SMALL_PADDING)
-//                                .padding(bottom = SMALL_PADDING),
-//                            transactionItem = transactions[index],
-//                            onTransactionClicked = {
-//                                navigator.push(DetailRoute(it.date))
-//                            }
-//                        )
-//                    }
-//                }
-//            }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = listState

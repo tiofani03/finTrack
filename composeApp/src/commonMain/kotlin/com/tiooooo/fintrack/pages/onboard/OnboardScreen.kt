@@ -1,5 +1,10 @@
 package com.tiooooo.fintrack.pages.onboard
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseOutCubic
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,6 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -27,6 +37,7 @@ import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium20
 import com.tiooooo.fintrack.pages.onboard.components.OnBoardStories
 import com.tiooooo.fintrack.pages.onboard.components.OnboardBottomSheet
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -36,6 +47,13 @@ fun OnboardScreen(
 ) {
     val listOfImages = onboardScreenModel.listOfImages
     val listOfText = onboardScreenModel.listOfText
+
+    var isVisibleBottomSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        delay(200)
+        isVisibleBottomSheet = true
+    }
 
     BaseScaffold(
         modifier = modifier,
@@ -106,19 +124,29 @@ fun OnboardScreen(
                 }
             }
 
-            OnboardBottomSheet(
+            AnimatedVisibility(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.25f)
-                    .align(Alignment.BottomCenter)
-                    .background(
-                        shape = RoundedCornerShape(
-                            topStart = EXTRA_LARGE_PADDING,
-                            topEnd = EXTRA_LARGE_PADDING,
+                    .align(Alignment.BottomCenter),
+                visible = isVisibleBottomSheet,
+                enter = slideInVertically(
+                    initialOffsetY = { fullHeight -> fullHeight },
+                    animationSpec = tween(durationMillis = 500, easing = EaseOutCubic)
+                ) + fadeIn(animationSpec = tween(500))
+            ) {
+                OnboardBottomSheet(
+                    modifier = Modifier
+                        .background(
+                            shape = RoundedCornerShape(
+                                topStart = EXTRA_LARGE_PADDING,
+                                topEnd = EXTRA_LARGE_PADDING,
+                            ),
+                            color = MaterialTheme.colorScheme.background,
                         ),
-                        color = MaterialTheme.colorScheme.background,
-                    ),
-            )
+                )
+            }
+
         }
     }
 }
