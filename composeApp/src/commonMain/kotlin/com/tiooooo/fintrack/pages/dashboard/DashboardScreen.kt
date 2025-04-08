@@ -130,6 +130,9 @@ fun DashboardScreen(
                         .fillMaxSize()
                         .padding(paddingValues),
                     homeScreenModel = homeScreenModel,
+                    onTransactionClicked = {
+                        screenModel.updateBottomSheetPosition(BottomNavTarget.TRANSACTIONS)
+                    }
                 )
             }
             BottomNavTarget.WALLET -> {

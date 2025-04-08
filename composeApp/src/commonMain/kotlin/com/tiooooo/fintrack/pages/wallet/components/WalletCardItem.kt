@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -57,6 +58,12 @@ fun WalletCardItem(
             ElevatedCard(
                 modifier = Modifier
                     .size(HUGE_PADDING),
+                elevation = CardDefaults.elevatedCardElevation(
+                    defaultElevation = 0.dp,
+                    pressedElevation = 0.dp,
+                    hoveredElevation = 0.dp,
+                    focusedElevation = 0.dp,
+                ),
             ) {
                 Icon(
                     modifier = Modifier
@@ -111,7 +118,11 @@ fun WalletCardAddItem(
         border = BorderStroke(0.dp, MaterialTheme.colorScheme.surface)
     ) {
         Column(
-            modifier = Modifier.padding(MEDIUM_PADDING),
+            modifier = Modifier
+                .clickable {
+
+                }
+                .padding(MEDIUM_PADDING),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -121,6 +132,12 @@ fun WalletCardAddItem(
                     .padding(SMALL_PADDING)
                     .clip(RoundedCornerShape(36.dp)),
                 shape = CircleShape,
+                elevation = CardDefaults.elevatedCardElevation(
+                    defaultElevation = 0.dp,
+                    pressedElevation = 0.dp,
+                    hoveredElevation = 0.dp,
+                    focusedElevation = 0.dp,
+                )
             ) {
                 Icon(
                     modifier = Modifier

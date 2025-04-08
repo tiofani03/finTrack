@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val customTextFieldColors
@@ -66,3 +67,27 @@ val customTextFieldColors
         disabledSuffixColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
         errorSuffixColor = MaterialTheme.colorScheme.error,
     )
+
+const val ALPHA_COLOR = 0.8f
+
+data class AppColors(
+    val textWhiteColor: Color,
+    val backgroundPrimaryLightColor: Color,
+    val backgroundPrimaryDarkColor: Color,
+)
+
+val finTrackLight = AppColors(
+    textWhiteColor = Color.White,
+    backgroundPrimaryLightColor = primaryLight,
+    backgroundPrimaryDarkColor = primaryDark
+)
+
+val finTrackDark = AppColors(
+    textWhiteColor = Color.White.copy(ALPHA_COLOR),
+    backgroundPrimaryLightColor = primaryLight.copy(ALPHA_COLOR),
+    backgroundPrimaryDarkColor = primaryDark.copy(ALPHA_COLOR)
+)
+
+val FinTrackAppColors = staticCompositionLocalOf<AppColors> {
+    error("No AppColors provided")
+}
