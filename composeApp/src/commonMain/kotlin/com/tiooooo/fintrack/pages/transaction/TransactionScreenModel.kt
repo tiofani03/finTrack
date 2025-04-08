@@ -24,7 +24,7 @@ class TransactionScreenModel : ScreenModel, ScrollStateManager {
     private fun fetchDataFromApi() {
         CoroutineScope(Dispatchers.IO).launch {
             delay(1000)
-            _transactionList.value = generateRandomTransactionData(10000)
+            _transactionList.value = generateRandomTransactionData(20)
         }
     }
 

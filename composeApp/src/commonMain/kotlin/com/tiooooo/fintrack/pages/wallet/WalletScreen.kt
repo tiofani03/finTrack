@@ -1,7 +1,6 @@
 package com.tiooooo.fintrack.pages.wallet
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,17 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.EXTRA_SMALL_PADDING
-import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
+import com.tiooooo.fintrack.component.theme.FinTrackAppColors
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
-import com.tiooooo.fintrack.component.theme.primaryDark
-import com.tiooooo.fintrack.component.theme.primaryLight
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium20
 import com.tiooooo.fintrack.component.utils.formatRupiah
@@ -46,6 +42,7 @@ fun WalletScreen(
     val walletList by walletScreenModel.walletList.collectAsState()
     val listState by walletScreenModel.lazyListState.collectAsState()
     val walletAmountTotal by walletScreenModel.walletAmountTotal.collectAsState()
+    val appColors = FinTrackAppColors.current
 
     BaseScaffold(
         modifier = modifier,
@@ -53,7 +50,14 @@ fun WalletScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(primaryDark, primaryLight)))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            appColors.backgroundPrimaryLightColor,
+                            appColors.backgroundPrimaryDarkColor,
+                        )
+                    )
+                )
         ) {
             Column(
                 modifier = Modifier
@@ -69,7 +73,7 @@ fun WalletScreen(
                     text = "Keuangan Saya",
                     style = textMedium14().copy(
                         fontWeight = FontWeight.Light,
-                        color = Color.White,
+                        color = appColors.textWhiteColor,
                     ),
                     textAlign = TextAlign.Center,
                 )
@@ -81,7 +85,7 @@ fun WalletScreen(
                     text = formatRupiah(amount = walletAmountTotal),
                     style = textMedium20().copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = appColors.textWhiteColor,
                     ),
                     textAlign = TextAlign.Center,
                 )

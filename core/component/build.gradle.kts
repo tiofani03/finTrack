@@ -58,6 +58,8 @@ kotlin {
             implementation(libs.material3.window.size.class1)
             api(libs.pullrefresh)
             api("network.chaintech:cmptoast:1.0.4")
+            api(libs.vico.multiplatform.m3)
+            api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
@@ -259,9 +260,13 @@ fun FinTrackTheme(
         else -> lightScheme
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = JakartaSansTypography(),
-        content = content
-    )
+    val colors = if (darkTheme) finTrackDark else finTrackLight
+
+    CompositionLocalProvider(FinTrackAppColors provides colors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = JakartaSansTypography(),
+            content = content
+        )
+    }
 }
