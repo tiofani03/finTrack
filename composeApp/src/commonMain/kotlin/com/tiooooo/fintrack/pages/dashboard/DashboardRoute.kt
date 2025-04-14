@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import com.tiooooo.fintrack.data.wallet.api.WalletRepository
 import com.tiooooo.fintrack.data.wallet.impl.DummyWalletRepository
 import com.tiooooo.fintrack.pages.home.HomeScreenModel
@@ -15,10 +17,9 @@ import com.tiooooo.fintrack.pages.wallet.WalletScreenModel
 object DashboardRoute : Screen {
     @Composable
     override fun Content() {
-        val walletRepository: WalletRepository = DummyWalletRepository()
         val dashboardScreenModel = rememberScreenModel { DashboardScreenModel() }
-        val homeScreenModel = rememberScreenModel { HomeScreenModel(walletRepository) }
-        val walletScreenModel = rememberScreenModel { WalletScreenModel() }
+        val homeScreenModel = koinScreenModel<HomeScreenModel>()
+        val walletScreenModel = koinScreenModel<WalletScreenModel>()
         val transactionScreenModel = rememberScreenModel { TransactionScreenModel() }
         val settingScreenModel = rememberScreenModel { SettingScreenModel() }
 

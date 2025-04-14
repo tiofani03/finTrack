@@ -81,7 +81,8 @@ fun SettingScreen(
                     .fillMaxSize(),
                 state = listState
             ) {
-                item { ProfileHeader(
+                item {
+                    ProfileHeader(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = MEDIUM_PADDING)
