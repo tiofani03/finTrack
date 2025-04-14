@@ -4,17 +4,15 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.pages.home.components.SectionCardTotal
@@ -30,15 +28,28 @@ fun HomeScreen(
     homeScreenModel: HomeScreenModel,
     onTransactionClicked: () -> Unit,
 ) {
-    val latestTransactionList by homeScreenModel.latestTransactionList.collectAsState()
-    val listState by homeScreenModel.lazyListState.collectAsState()
-    val summaryListState by homeScreenModel.summaryListState.collectAsState()
-    val summaryList by homeScreenModel.summaryList.collectAsState()
-    val walletAmount by homeScreenModel.walletAmountTotal.collectAsState()
-
-    val scrollOffset = listState.firstVisibleItemIndex
-    val scrollOffsetPx = listState.firstVisibleItemScrollOffset
+    val state by homeScreenModel.state.collectAsState()
+    val scrollOffset = state.listState.firstVisibleItemIndex
+    val scrollOffsetPx = state.listState.firstVisibleItemScrollOffset
     val isScrolled = scrollOffset > 0 || scrollOffsetPx > 0
+
+    LaunchedEffect(Unit) {
+        homeScreenModel.effect.collect { effect ->
+            when (effect) {
+                is HomeEffect.NavigateToTransaction -> onTransactionClicked()
+                is HomeEffect.ShowToast -> {}
+            }
+        }
+    }
+
+
+    LaunchedEffect(state.listState) {
+        homeScreenModel.dispatch(HomeIntent.UpdateListState(state = state.listState))
+    }
+
+    LaunchedEffect(state.summaryListState) {
+        homeScreenModel.dispatch(HomeIntent.UpdateSummaryState(state = state.summaryListState))
+    }
 
     Column(modifier = modifier) {
         AnimatedVisibility(
@@ -58,7 +69,7 @@ fun HomeScreen(
         )
         LazyColumn(
             modifier = Modifier,
-            state = listState,
+            state = state.listState,
             verticalArrangement = Arrangement.spacedBy(MEDIUM_PADDING),
             contentPadding = PaddingValues(vertical = MEDIUM_PADDING),
         ) {
@@ -68,21 +79,23 @@ fun HomeScreen(
                         .padding(horizontal = MEDIUM_PADDING)
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    walletAmount = walletAmount,
-                    onTransactionClicked = onTransactionClicked,
+                    walletAmount = state.totalAmount,
+                    onTransactionClicked = {
+                        homeScreenModel.dispatch(HomeIntent.OnTransactionClicked)
+                    },
                 )
             }
             item {
                 SummarySection(
                     modifier = Modifier.fillMaxWidth(),
-                    summaryList = summaryList,
-                    summaryListState = summaryListState,
+                    summaryList = state.summary,
+                    summaryListState = state.summaryListState,
                 )
             }
             item {
                 SectionLatestTransaction(
                     modifier = Modifier.padding(horizontal = MEDIUM_PADDING),
-                    transactionItem = latestTransactionList,
+                    transactionItem = state.transactions,
                 )
             }
             item {
@@ -93,7 +106,5 @@ fun HomeScreen(
             }
         }
     }
-    homeScreenModel.updateState(listState)
-    homeScreenModel.updateSummaryList(summaryListState)
 }
 

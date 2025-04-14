@@ -111,6 +111,7 @@ fun WalletCardItem(
 @Composable
 fun WalletCardAddItem(
     modifier: Modifier = Modifier,
+    onAddWalletClicked: () -> Unit,
 ) {
     OutlinedCard(
         modifier = modifier,
@@ -120,7 +121,7 @@ fun WalletCardAddItem(
         Column(
             modifier = Modifier
                 .clickable {
-
+                    onAddWalletClicked.invoke()
                 }
                 .padding(MEDIUM_PADDING),
             horizontalAlignment = Alignment.CenterHorizontally,
