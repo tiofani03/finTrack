@@ -37,6 +37,13 @@ import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium16
+import com.tiooooo.fintrack.data.local.entity.WalletEntity
+import com.tiooooo.fintrack.data.model.wallet.WalletItem
+import com.tiooooo.fintrack.data.utils.formatRupiah
+import com.tiooooo.fintrack.data.utils.formatToReadableString
+import fintrack.composeapp.generated.resources.Res
+import fintrack.composeapp.generated.resources.ic_login_google
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -45,10 +52,27 @@ fun WalletCardItem(
     modifier: Modifier = Modifier,
     walletItem: WalletItem,
 ) {
+    val textColor = if (walletItem.color == Color.White) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        Color.Black
+    }
+
+    val backgroundColor = if (walletItem.color == Color.White) {
+        MaterialTheme.colorScheme.surface
+    } else {
+        walletItem.color
+    }
+
+    println(backgroundColor)
+
     OutlinedCard(
         modifier = modifier,
         shape = RoundedCornerShape(SMALL_PADDING),
         border = BorderStroke(0.dp, MaterialTheme.colorScheme.surface),
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = backgroundColor,
+        ),
     ) {
         Column(
             modifier = Modifier
@@ -82,15 +106,17 @@ fun WalletCardItem(
                 text = walletItem.name,
                 style = textMedium12().copy(
                     fontWeight = FontWeight.SemiBold,
-                )
+                ),
+                color = textColor,
             )
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                text = "Di-update 12 Mar 18.30",
+                text = "Di-update ${walletItem.updatedAt}",
                 style = textMedium10().copy(fontWeight = FontWeight.Thin),
+                color = textColor,
             )
             Text(
                 modifier = Modifier
@@ -98,10 +124,11 @@ fun WalletCardItem(
                     .fillMaxWidth(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                text = walletItem.amount,
+                text = formatRupiah(amount = walletItem.amount.toDoubleOrNull() ?: 0.0),
                 style = textMedium16().copy(
                     fontWeight = FontWeight.ExtraBold,
-                )
+                ),
+                color = textColor,
             )
         }
 
@@ -163,13 +190,3 @@ fun WalletCardAddItem(
         }
     }
 }
-
-
-data class WalletItem(
-    val id: Int,
-    val name: String,
-    val amount: String,
-    val amountDouble: Double,
-    val color: Color,
-    val image: DrawableResource,
-)

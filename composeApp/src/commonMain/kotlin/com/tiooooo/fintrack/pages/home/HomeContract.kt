@@ -1,9 +1,9 @@
 package com.tiooooo.fintrack.pages.home
 
 import androidx.compose.foundation.lazy.LazyListState
+import com.tiooooo.fintrack.data.model.wallet.WalletItem
 import com.tiooooo.fintrack.pages.home.components.SummaryItem
 import com.tiooooo.fintrack.pages.transaction.components.TransactionItem
-import com.tiooooo.fintrack.pages.wallet.components.WalletItem
 
 sealed interface HomeEffect {
     data object NavigateToTransaction : HomeEffect
