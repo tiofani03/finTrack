@@ -15,7 +15,7 @@ import com.tiooooo.fintrack.component.theme.EXTRA_SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium14
-import com.tiooooo.fintrack.component.utils.formatRupiah
+import com.tiooooo.fintrack.data.utils.formatRupiah
 
 @Composable
 fun CardTransactionDate(

@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.FloatingActionButtonElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -42,8 +41,8 @@ import com.tiooooo.fintrack.pages.settings.SettingScreen
 import com.tiooooo.fintrack.pages.settings.SettingScreenModel
 import com.tiooooo.fintrack.pages.transaction.TransactionScreen
 import com.tiooooo.fintrack.pages.transaction.TransactionScreenModel
-import com.tiooooo.fintrack.pages.wallet.WalletScreen
-import com.tiooooo.fintrack.pages.wallet.WalletScreenModel
+import com.tiooooo.fintrack.pages.wallet.list.WalletScreen
+import com.tiooooo.fintrack.pages.wallet.list.WalletScreenModel
 
 @Composable
 fun DashboardScreen(

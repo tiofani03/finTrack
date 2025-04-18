@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+
 }
 
 kotlin {
@@ -49,17 +50,14 @@ kotlin {
             api(libs.voyager.tabNavigator)
             api(libs.voyager.bottomSheetNavigator)
             api(libs.voyager.viewmodelKmp)
-            api(libs.koin.core)
-            api(libs.koin.test)
-            api(libs.koin.compose)
             api(libs.adaptive)
             api(libs.adaptive.layout)
             api(libs.adaptive.navigation)
             implementation(libs.material3.window.size.class1)
             api(libs.pullrefresh)
-            api("network.chaintech:cmptoast:1.0.4")
+            api(libs.cmptoast)
             api(libs.vico.multiplatform.m3)
-            api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+            implementation(project(":core:data"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -68,8 +66,8 @@ kotlin {
 }
 
 android {
-    namespace = "com.lm.kmp.core.component"
-    compileSdk = 34
+    namespace = "com.tiooooo.fintrack.core.component"
+    compileSdk = 35
     defaultConfig {
         minSdk = 24
     }

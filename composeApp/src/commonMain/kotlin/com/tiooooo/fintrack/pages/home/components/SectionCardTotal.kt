@@ -28,7 +28,7 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium18
-import com.tiooooo.fintrack.component.utils.formatRupiah
+import com.tiooooo.fintrack.data.utils.formatRupiah
 
 @Composable
 fun SectionCardTotal(
