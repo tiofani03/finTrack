@@ -1,10 +1,12 @@
 package com.tiooooo.fintrack.pages.transaction.add
 
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.tiooooo.fintrack.base.BaseScreenModelRedux
 import com.tiooooo.fintrack.data.api.CategoryRepository
 import com.tiooooo.fintrack.data.api.TransactionRepository
 import com.tiooooo.fintrack.data.api.WalletRepository
 import com.tiooooo.fintrack.data.local.entity.toWalletItem
+import kotlinx.coroutines.launch
 
 class AddTransactionScreenModel(
     private val transactionRepository: TransactionRepository,
@@ -33,11 +35,17 @@ class AddTransactionScreenModel(
     override suspend fun handleIntentSideEffect(intent: AddTransactionIntent) {
         when (intent) {
             is AddTransactionIntent.Initial -> {
-                walletRepository.getAllWallets().collect { wallets ->
-                    setState { it.copy(wallets = wallets.map { walletEntity -> walletEntity.toWalletItem() }) }
-                }
-                categoryRepository.getAllCategories().collect { categories ->
-                    setState { it.copy(categories = categories) }
+                screenModelScope.launch {
+                    launch {
+                        walletRepository.getAllWallets().collect { wallets ->
+                            setState { it.copy(wallets = wallets.map { walletEntity -> walletEntity.toWalletItem() }) }
+                        }
+                    }
+                    launch {
+                        categoryRepository.getAllCategories().collect { categories ->
+                            setState { it.copy(categories = categories) }
+                        }
+                    }
                 }
             }
 
