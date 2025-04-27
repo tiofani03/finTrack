@@ -41,6 +41,7 @@ import com.tiooooo.fintrack.pages.settings.SettingScreen
 import com.tiooooo.fintrack.pages.settings.SettingScreenModel
 import com.tiooooo.fintrack.pages.transaction.TransactionScreen
 import com.tiooooo.fintrack.pages.transaction.TransactionScreenModel
+import com.tiooooo.fintrack.pages.transaction.add.AddTransactionRoute
 import com.tiooooo.fintrack.pages.wallet.list.WalletScreen
 import com.tiooooo.fintrack.pages.wallet.list.WalletScreenModel
 
@@ -102,7 +103,7 @@ fun DashboardScreen(
                     }
                     FloatingActionButton(
                         onClick = {
-                            navigator.push(DetailRoute("Halo ges"))
+                            navigator.push(AddTransactionRoute())
                         },
                         modifier = Modifier
                             .align(Alignment.Center)

@@ -7,15 +7,28 @@ import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.tiooooo.fintrack.data.local.converter.DateTimeConverter
+import com.tiooooo.fintrack.data.local.dao.CategoryDao
+import com.tiooooo.fintrack.data.local.dao.TransactionDao
 import com.tiooooo.fintrack.data.local.dao.WalletDao
+import com.tiooooo.fintrack.data.local.entity.CategoryEntity
+import com.tiooooo.fintrack.data.local.entity.TransactionEntity
 import com.tiooooo.fintrack.data.local.entity.WalletEntity
 import kotlinx.coroutines.Dispatchers
 
-@Database(entities = [WalletEntity::class], version = 1)
+@Database(
+    entities = [
+        WalletEntity::class,
+        TransactionEntity::class,
+        CategoryEntity::class
+    ],
+    version = 1
+)
 @TypeConverters(DateTimeConverter::class)
 @ConstructedBy(FinTrackDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun walletDao(): WalletDao
+    abstract fun transactionDao(): TransactionDao
+    abstract fun categoryDao(): CategoryDao
 }
 
 // Room compiler generates the `actual` implementations

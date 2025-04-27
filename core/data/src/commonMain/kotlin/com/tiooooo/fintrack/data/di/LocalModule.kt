@@ -7,4 +7,6 @@ import org.koin.dsl.module
 val localModule = module {
     single { getRoomDatabase(get()) }
     single { get<AppDatabase>().walletDao() }
+    single { get<AppDatabase>().categoryDao() }
+    single { get<AppDatabase>().transactionDao() }
 }
