@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.filled.HelpCenter
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.QrCodeScanner
@@ -45,11 +46,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.component.topBar.BasicTopBarTitle
+import com.tiooooo.fintrack.component.theme.AppTheme
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium16
+import com.tiooooo.fintrack.pages.settings.component.ChooseThemeDialog
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_login_google
 import org.jetbrains.compose.resources.painterResource
@@ -59,9 +62,9 @@ fun SettingScreen(
     modifier: Modifier = Modifier,
     settingScreenModel: SettingScreenModel,
 ) {
-    val homeList by settingScreenModel.settingList.collectAsState()
     val listState by settingScreenModel.lazyListState.collectAsState()
     val navigator = LocalNavigator.currentOrThrow
+    val state by settingScreenModel.state.collectAsState()
 
     BaseScaffold(
         modifier = modifier,
@@ -83,16 +86,38 @@ fun SettingScreen(
             ) {
                 item {
                     ProfileHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = MEDIUM_PADDING)
-                ) }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = MEDIUM_PADDING)
+                    )
+                }
                 item { SectionList(title = "Akun", items = getDummyAccountItems()) }
                 item { SectionList(title = "Bantuan", items = getDummyHelpItems()) }
                 item { SectionList(title = "Kebijakan dan Privasi", items = getTermAndCondition()) }
+                item {
+                    SectionList(
+                        title = "Lainnya",
+                        items = getOtherSettings(),
+                        onItemClicked = { item ->
+                            item.intent?.let {
+                                settingScreenModel.dispatch(it)
+                            }
+                        })
+                }
                 item { Spacer(modifier = Modifier.height(80.dp)) }
             }
         }
+    }
+
+    if (state.isShowDialogTheme) {
+        ChooseThemeDialog(
+            currentTheme = AppTheme.fromValue(state.activeTheme),
+            onDismiss = { settingScreenModel.dispatch(SettingIntent.ShowDialogTheme(false)) },
+            onConfirm = {
+                settingScreenModel.dispatch(SettingIntent.ShowDialogTheme(false))
+                settingScreenModel.dispatch(SettingIntent.UpdateTheme(it.label))
+            }
+        )
     }
 }
 
@@ -176,7 +201,11 @@ fun LoyaltyCodeSection() {
 }
 
 @Composable
-fun SectionList(title: String, items: List<ProfileItem>) {
+fun SectionList(
+    title: String,
+    items: List<ProfileItem>,
+    onItemClicked: (ProfileItem) -> Unit = { },
+) {
     Column(
         modifier = Modifier
     ) {
@@ -190,23 +219,26 @@ fun SectionList(title: String, items: List<ProfileItem>) {
         Spacer(modifier = Modifier.height(SMALL_PADDING))
 
         items.forEach { item ->
-            ProfileListItem(item)
+            ProfileListItem(item, onItemClicked = onItemClicked)
         }
     }
 }
 
 @Composable
-fun ProfileListItem(item: ProfileItem) {
+fun ProfileListItem(
+    item: ProfileItem,
+    onItemClicked: (ProfileItem) -> Unit = { },
+) {
     Row(
         modifier = Modifier
             .clickable {
-
+                onItemClicked.invoke(item)
             }
             .fillMaxWidth()
             .padding(MEDIUM_PADDING),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(imageVector = item.icon, contentDescription = item.title, tint = Color.Black)
+        Icon(imageVector = item.icon, contentDescription = item.title)
         Spacer(modifier = Modifier.width(MEDIUM_PADDING))
 
         Text(
@@ -236,7 +268,12 @@ fun ProfileListItem(item: ProfileItem) {
 }
 
 
-data class ProfileItem(val title: String, val icon: ImageVector, val actionText: String? = null)
+data class ProfileItem(
+    val title: String,
+    val icon: ImageVector,
+    val actionText: String? = null,
+    val intent: SettingIntent? = null
+)
 
 fun getDummyAccountItems() = listOf(
     ProfileItem("Akun Premium", Icons.Default.Star, "Upgrade"),
@@ -250,4 +287,13 @@ fun getDummyHelpItems() = listOf(
 fun getTermAndCondition() = listOf(
     ProfileItem("Ketentuan Layanan", Icons.Default.Info),
     ProfileItem("Kebijakan Privasi", Icons.Default.Key),
+)
+
+fun getOtherSettings() = listOf(
+    ProfileItem(
+        "Pengaturan Tema",
+        Icons.Default.DarkMode,
+        null,
+        SettingIntent.ShowDialogTheme(true)
+    ),
 )

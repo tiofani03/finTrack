@@ -1,7 +1,7 @@
 package com.tiooooo.fintrack.pages.home
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.tiooooo.fintrack.BaseScreenModel
+import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.data.api.WalletRepository
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -14,7 +14,16 @@ class HomeScreenModel(
         dispatch(HomeIntent.LoadData)
     }
 
-    override fun dispatch(intent: HomeIntent) {
+    override fun reducer(state: HomeState, intent: HomeIntent): HomeState {
+        return when (intent) {
+            is HomeIntent.UpdateListState -> state.copy(listState = intent.state)
+            is HomeIntent.UpdateSummaryState -> state.copy(summaryListState = intent.state)
+            else -> state
+        }
+    }
+
+
+    override suspend fun handleIntentSideEffect(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.LoadData -> {
                 setState { it.copy(isLoading = true) }
@@ -25,19 +34,13 @@ class HomeScreenModel(
                 }
             }
 
-            is HomeIntent.UpdateListState -> {
-                setState { it.copy(listState = intent.state) }
-            }
-
-            is HomeIntent.UpdateSummaryState -> {
-                setState { it.copy(summaryListState = intent.state) }
-            }
-
             is HomeIntent.OnTransactionClicked -> {
                 screenModelScope.launch {
                     sendEffect(HomeEffect.NavigateToTransaction)
                 }
             }
+
+            else -> Unit
         }
     }
 }

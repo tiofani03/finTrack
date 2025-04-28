@@ -1,7 +1,7 @@
 package com.tiooooo.fintrack.pages.transaction.add
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.tiooooo.fintrack.base.BaseScreenModelRedux
+import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.data.api.CategoryRepository
 import com.tiooooo.fintrack.data.api.TransactionRepository
 import com.tiooooo.fintrack.data.api.WalletRepository
@@ -12,7 +12,7 @@ class AddTransactionScreenModel(
     private val transactionRepository: TransactionRepository,
     private val walletRepository: WalletRepository,
     private val categoryRepository: CategoryRepository,
-) : BaseScreenModelRedux<AddTransactionState, AddTransactionIntent, AddTransactionEffect>(
+) : BaseScreenModel<AddTransactionState, AddTransactionIntent, AddTransactionEffect>(
     AddTransactionState()
 ) {
 

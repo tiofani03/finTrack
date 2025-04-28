@@ -2,6 +2,7 @@ package com.tiooooo.fintrack.data.di
 
 import com.tiooooo.fintrack.data.api.CategoryRepository
 import com.tiooooo.fintrack.data.api.CommonRepository
+import com.tiooooo.fintrack.data.impl.DatastoreRepository
 import com.tiooooo.fintrack.data.api.TransactionRepository
 import com.tiooooo.fintrack.data.api.WalletRepository
 import com.tiooooo.fintrack.data.impl.CategoryRepositoryImpl
@@ -15,4 +16,5 @@ val repositoryModule = module {
     single<CategoryRepository> { CategoryRepositoryImpl(get()) }
     single<WalletRepository> { WalletRepositoryImpl(get()) }
     single<CommonRepository> { CommonRepositoryImpl() }
+    single { DatastoreRepository(get()) }
 }
