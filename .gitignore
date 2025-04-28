@@ -1,18 +1,49 @@
+# =============== [ Android ] ===============
 *.iml
-.kotlin
-.gradle
-**/build/
-xcuserdata
-!src/**/build/
+.gradle/
 local.properties
-.idea
+**/build/
+.idea/
 .DS_Store
-captures
-.externalNativeBuild
-.cxx
+captures/
+.externalNativeBuild/
+.cxx/
+.kotlin/
+
+# =============== [ Xcode / iOS ] ===============
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
 !*.xcodeproj/project.xcworkspace/
+*.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
+**/xcuserdata/
 **/xcshareddata/WorkspaceSettings.xcsettings
+
+# =============== [ Pods - CocoaPods ] ===============
+Pods/
+Podfile.lock
+DerivedData/
+build/
+
+# =============== [ KMP multiplatform extra ] ===============
+/node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore Kotlin Native build
+.konan/
+
+# Ignore cocoapods generated artifacts
+cocoapods-build/
+
+# =============== [ Fastlane (kalau pakai) ] ===============
+fastlane/report.xml
+fastlane/screenshots/
+fastlane/test_output/
+
+# =============== [ Others ] ===============
+*.swp
+*.swo
