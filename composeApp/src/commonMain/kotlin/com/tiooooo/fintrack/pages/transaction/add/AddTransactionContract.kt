@@ -13,7 +13,6 @@ sealed interface AddTransactionEffect {
 
 sealed interface AddTransactionIntent {
     data object Initial : AddTransactionIntent
-
     data class OnTransactionNameChanged(val name: String) : AddTransactionIntent
     data class OnTransactionAmountChanged(val amount: String) : AddTransactionIntent
     data class OnTransactionDateChanged(val date: LocalDateTime) : AddTransactionIntent

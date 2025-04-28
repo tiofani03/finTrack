@@ -1,29 +1,20 @@
 package com.tiooooo.fintrack.pages.settings
 
 import androidx.compose.foundation.lazy.LazyListState
-import cafe.adriel.voyager.core.model.ScreenModel
+import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.component.utils.ScrollStateManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.delay
+import com.tiooooo.fintrack.data.impl.DatastoreRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 
-class SettingScreenModel : ScreenModel, ScrollStateManager {
-    private val _settingList = MutableStateFlow<List<String>>(emptyList())
-    val settingList: StateFlow<List<String>> = _settingList
+class SettingScreenModel(
+    private val datastoreRepository: DatastoreRepository,
+) : BaseScreenModel<SettingState, SettingIntent, SettingEffect>(SettingState()),
+    ScrollStateManager {
 
     init {
-        fetchDataFromApi()
-    }
-
-    private fun fetchDataFromApi() {
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(1000)
-            _settingList.value = List(500) { "Ini adalah data ke ${it + 1}" }
-        }
+        dispatch(SettingIntent.InitProfile)
     }
 
     private val _lazyListState = MutableStateFlow(LazyListState())
@@ -33,14 +24,26 @@ class SettingScreenModel : ScreenModel, ScrollStateManager {
         _lazyListState.value = state
     }
 
-    fun refreshData(onComplete: () -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(3000)
-            val newList = List(100) { index ->
-                "Data refreshed ke ${index + 1}"
+    override fun reducer(state: SettingState, intent: SettingIntent): SettingState {
+        return when (intent) {
+            is SettingIntent.ShowDialogTheme -> state.copy(isShowDialogTheme = intent.value)
+            is SettingIntent.UpdateTheme -> state.copy(activeTheme = intent.value)
+            else -> state
+        }
+    }
+
+    override suspend fun handleIntentSideEffect(intent: SettingIntent) {
+        when (intent) {
+            is SettingIntent.InitProfile -> {
+                val theme = datastoreRepository.themeApplication.first()
+                setState { it.copy(activeTheme = theme) }
             }
-            _settingList.value = newList.toMutableList()
-            onComplete()
+
+            is SettingIntent.UpdateTheme -> {
+                datastoreRepository.setThemeApplication(intent.value)
+            }
+
+            else -> Unit
         }
     }
 }

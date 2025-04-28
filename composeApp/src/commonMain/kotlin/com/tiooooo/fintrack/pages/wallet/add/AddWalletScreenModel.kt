@@ -1,13 +1,13 @@
 package com.tiooooo.fintrack.pages.wallet.add
 
-import com.tiooooo.fintrack.base.BaseScreenModelRedux
+import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.data.api.CommonRepository
 import com.tiooooo.fintrack.data.api.WalletRepository
 
 class AddWalletScreenModel(
     private val walletRepository: WalletRepository,
     private val commonRepository: CommonRepository,
-) : BaseScreenModelRedux<AddWalletState, AddWalletIntent, AddWalletEffect>(
+) : BaseScreenModel<AddWalletState, AddWalletIntent, AddWalletEffect>(
     AddWalletState()
 ) {
     init {

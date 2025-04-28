@@ -18,7 +18,6 @@ object DashboardRoute : Screen {
         val homeScreenModel = koinScreenModel<HomeScreenModel>()
         val walletScreenModel = koinScreenModel<WalletScreenModel>()
         val transactionScreenModel = rememberScreenModel { TransactionScreenModel() }
-        val settingScreenModel = rememberScreenModel { SettingScreenModel() }
 
         DashboardScreen(
             modifier = Modifier.fillMaxSize(),
@@ -26,7 +25,7 @@ object DashboardRoute : Screen {
             homeScreenModel = homeScreenModel,
             walletScreenModel = walletScreenModel,
             transactionScreenModel = transactionScreenModel,
-            settingScreenModel = settingScreenModel,
+            settingScreenModel = koinScreenModel(),
         )
     }
 }

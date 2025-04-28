@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.base
+package com.tiooooo.fintrack.component.base
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseScreenModelRedux<STATE, INTENT, EFFECT>(
+abstract class BaseScreenModel<STATE, INTENT, EFFECT>(
     initialState: STATE
 ) : ScreenModel {
 
