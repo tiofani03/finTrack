@@ -4,14 +4,20 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
-import java.text.NumberFormat
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 actual fun formatRupiah(amount: Double): String {
-    val locale = Locale("id", "ID")
-    val numberFormat = NumberFormat.getCurrencyInstance(locale)
-    return numberFormat.format(amount)
+    val symbols = DecimalFormatSymbols(Locale("in", "ID")).apply {
+        currencySymbol = "Rp "
+        groupingSeparator = '.'
+        decimalSeparator = ','
+    }
+
+    val decimalFormat = DecimalFormat("#,##0", symbols)
+    return "Rp ${decimalFormat.format(amount)}"
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

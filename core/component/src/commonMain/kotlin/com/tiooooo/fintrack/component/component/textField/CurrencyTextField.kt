@@ -72,7 +72,7 @@ fun CurrencyTextField(
                 keyboardType = KeyboardType.Number
             ),
             singleLine = true,
-            visualTransformation = VisualTransformation.None, // Sudah diformat manual
+            visualTransformation = VisualTransformation.None,
             colors = customTextFieldColors,
             trailingIcon = {
                 if (value.isNotEmpty()) {
