@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
+import com.tiooooo.fintrack.data.model.transaction.TransactionItem
 import com.tiooooo.fintrack.pages.transaction.components.CardTransaction
-import com.tiooooo.fintrack.pages.transaction.components.TransactionItem
 
 @Composable
 fun SectionLatestTransaction(

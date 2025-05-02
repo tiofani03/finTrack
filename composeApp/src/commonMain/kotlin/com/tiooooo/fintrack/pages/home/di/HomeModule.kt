@@ -5,6 +5,6 @@ import com.tiooooo.fintrack.pages.settings.SettingScreenModel
 import org.koin.dsl.module
 
 val homeModule = module {
-    factory { HomeScreenModel(get()) }
+    factory { HomeScreenModel(get(), get()) }
     factory { SettingScreenModel(get()) }
 }

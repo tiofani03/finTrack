@@ -9,4 +9,5 @@ val localModule = module {
     single { get<AppDatabase>().walletDao() }
     single { get<AppDatabase>().categoryDao() }
     single { get<AppDatabase>().transactionDao() }
+    single { get<AppDatabase>().transactionWalletDao() }
 }

@@ -12,7 +12,7 @@ import com.tiooooo.fintrack.data.impl.WalletRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<TransactionRepository> { TransactionRepositoryImpl(get()) }
+    single<TransactionRepository> { TransactionRepositoryImpl(get(), get(), get()) }
     single<CategoryRepository> { CategoryRepositoryImpl(get()) }
     single<WalletRepository> { WalletRepositoryImpl(get()) }
     single<CommonRepository> { CommonRepositoryImpl() }
