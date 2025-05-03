@@ -7,22 +7,25 @@ import platform.Foundation.NSDateFormatter
 import platform.Foundation.NSLocale
 import platform.Foundation.NSNumber
 import platform.Foundation.NSNumberFormatter
+import platform.Foundation.NSNumberFormatterCurrencyStyle
 import platform.Foundation.localeWithLocaleIdentifier
 import platform.Foundation.numberWithDouble
 
 
 actual fun formatRupiah(amount: Double): String {
     val numberFormatter = NSNumberFormatter()
-    numberFormatter.numberStyle = 2u
-    numberFormatter.locale = NSLocale("id_ID")
+    numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle
+    numberFormatter.locale = NSLocale(localeIdentifier = "id_ID")
 
-    val number = NSNumber.numberWithDouble(amount)
-    return numberFormatter.stringFromNumber(number) ?: "Rp0"
+    val number = NSNumber.numberWithDouble(kotlin.math.abs(amount))
+    val formatted = numberFormatter.stringFromNumber(number) ?: "Rp0"
+
+    return if (amount < 0) "-$formatted" else formatted
 }
 
-actual fun LocalDateTime.formatToReadableString(): String {
+actual fun LocalDateTime.formatToReadableString(formatedDate: String): String {
     val dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "dd MMM HH.mm"
+    dateFormatter.dateFormat = formatedDate
     dateFormatter.locale = NSLocale.localeWithLocaleIdentifier("en_US")
 
     val calendar = NSCalendar.currentCalendar

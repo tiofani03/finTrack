@@ -2,12 +2,14 @@ package com.tiooooo.fintrack.pages.home
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.tiooooo.fintrack.component.base.BaseScreenModel
+import com.tiooooo.fintrack.data.api.TransactionRepository
 import com.tiooooo.fintrack.data.api.WalletRepository
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeScreenModel(
     private val walletRepository: WalletRepository,
+    private val transactionRepository: TransactionRepository,
 ) : BaseScreenModel<HomeState, HomeIntent, HomeEffect>(HomeState()) {
 
     init {
@@ -30,6 +32,11 @@ class HomeScreenModel(
                 screenModelScope.launch {
                     walletRepository.getTotalAmount().collectLatest { total ->
                         setState { it.copy(totalAmount = total) }
+                    }
+                }
+                screenModelScope.launch {
+                    transactionRepository.getAllTransactions().collect { transactions ->
+                        setState { it.copy(transactions = transactions.take(5)) }
                     }
                 }
             }

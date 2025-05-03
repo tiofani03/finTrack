@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tiooooo.fintrack.data.model.transaction.TransactionItem
 import com.tiooooo.fintrack.data.model.transaction.TransactionType
+import com.tiooooo.fintrack.data.utils.formatToReadableString
 import com.tiooooo.fintrack.data.utils.timeNow
 import kotlinx.datetime.LocalDateTime
 
@@ -19,16 +20,18 @@ data class TransactionEntity(
     val updatedAt: LocalDateTime = timeNow()
 )
 
-fun TransactionEntity.toItem(): TransactionItem {
+fun TransactionEntity.toItem(walletName: String = ""): TransactionItem {
     return TransactionItem(
         id = id,
         name = name,
         amount = amount,
         type = type,
         walletId = walletId,
+        walletName = walletName,
         categoryId = categoryId,
         createdAt = createdAt,
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
+        updatedAtAsString = updatedAt.formatToReadableString("dd MMM yyyy"),
     )
 }
 

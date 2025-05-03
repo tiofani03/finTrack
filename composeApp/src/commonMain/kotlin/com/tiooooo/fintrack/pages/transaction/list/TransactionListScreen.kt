@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.transaction
+package com.tiooooo.fintrack.pages.transaction.list
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -14,14 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,16 +52,16 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun TransactionScreen(
     modifier: Modifier = Modifier,
-    transactionScreenModel: TransactionScreenModel,
+    transactionScreenModel: TransactionListScreenModel,
 ) {
-    val homeList by transactionScreenModel.transactionList.collectAsState()
     val listState by transactionScreenModel.lazyListState.collectAsState()
+    val state by transactionScreenModel.state.collectAsState()
     var showSheet by remember { mutableStateOf(false) }
 
     var isRefreshing by remember { mutableStateOf(false) }
 
     val navigator = LocalNavigator.currentOrThrow
-    val groupedTransactions = homeList.groupBy { it.date }
+    val groupedTransactions = state.transactions.groupBy { it.createdAt.date.toString()  }
 
     val scrollOffset = listState.firstVisibleItemIndex
     val scrollOffsetPx = listState.firstVisibleItemScrollOffset
@@ -143,7 +141,7 @@ fun TransactionScreen(
                                     top = MEDIUM_PADDING,
                                     bottom = SMALL_PADDING
                                 ),
-                            date = date,
+                            date = transactions.first().updatedAtAsString,
                             transactionCount = transactionCount,
                             totalAmount = totalAmount,
                         )
@@ -154,13 +152,13 @@ fun TransactionScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    navigator.push(DetailRoute(transaction.date))
+//                                    navigator.push(DetailRoute(transaction.date))
                                 }
                                 .padding(SMALL_PADDING)
                                 .padding(bottom = SMALL_PADDING),
                             transactionItem = transaction,
                             onTransactionClicked = {
-                                navigator.push(DetailRoute(it.date))
+//                                navigator.push(DetailRoute(it.date))
                             }
                         )
                     }

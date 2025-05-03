@@ -26,7 +26,10 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium14
+import com.tiooooo.fintrack.data.model.transaction.TransactionItem
+import com.tiooooo.fintrack.data.model.transaction.TransactionType
 import com.tiooooo.fintrack.data.utils.formatRupiah
+import com.tiooooo.fintrack.data.utils.formatToReadableString
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_transaction_chart
 import org.jetbrains.compose.resources.painterResource
@@ -63,7 +66,7 @@ fun CardTransaction(
                 .align(Alignment.CenterVertically),
         ) {
             Text(
-                text = transactionItem.purpose,
+                text = transactionItem.name,
                 style = textMedium12().copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
@@ -72,7 +75,7 @@ fun CardTransaction(
             )
             Text(
                 modifier = Modifier.padding(top = SMALL_PADDING),
-                text = transactionItem.date,
+                text = transactionItem.createdAt.formatToReadableString(),
                 style = textMedium10().copy(
                     fontWeight = FontWeight.Thin,
                 ),
@@ -116,30 +119,15 @@ fun CardTransaction(
     }
 }
 
-data class TransactionItem(
-    val id: Int,
-    val date: String,
-    val purpose: String,
-    val walletName: String,
-    val type: Int,
-    val amount: Int,
-)
 
 fun List<TransactionItem>.calculateTotal(): Int {
     return this.fold(0) { total, transaction ->
-        if (transaction.type == OUTCOME) {
-            total - transaction.amount
-        } else {
-            total + transaction.amount
-        }
+        total + transaction.amount.toInt()
     }
 }
 
-const val INCOME = 1
-const val OUTCOME = 0
-
 fun TransactionItem.isIncome(): Boolean {
-    return this.type == INCOME
+    return this.type == TransactionType.INCOME
 }
 
 fun TransactionItem.printSymbolTransaction(): String {
@@ -148,7 +136,7 @@ fun TransactionItem.printSymbolTransaction(): String {
 
 fun TransactionItem.printTransactionAmount(): String {
     val amount = formatRupiah(this.amount.toDouble())
-    return "${printSymbolTransaction()} $amount"
+    return amount
 }
 
 @Composable

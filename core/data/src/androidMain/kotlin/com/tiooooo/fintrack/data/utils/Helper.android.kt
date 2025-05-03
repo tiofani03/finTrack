@@ -17,11 +17,14 @@ actual fun formatRupiah(amount: Double): String {
     }
 
     val decimalFormat = DecimalFormat("#,##0", symbols)
-    return "Rp ${decimalFormat.format(amount)}"
+    if (amount < 0) {
+        return "-Rp${decimalFormat.format(-amount)}"
+    }
+    return "Rp${decimalFormat.format(amount)}"
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-actual fun LocalDateTime.formatToReadableString(): String {
-    val formatter = DateTimeFormatter.ofPattern("dd MMM HH.mm", Locale.ENGLISH)
+actual fun LocalDateTime.formatToReadableString(formatedDate: String): String {
+    val formatter = DateTimeFormatter.ofPattern(formatedDate, Locale.ENGLISH)
     return this.toJavaLocalDateTime().format(formatter)
 }
