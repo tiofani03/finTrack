@@ -10,6 +10,7 @@ struct iOSApp: App {
         }
     }
     init() {
-               KoinKt.doInitKoin()
+               let authService = IOSAuthService()
+               KoinKt.doInitKoin(authService: authService)
            }
 }

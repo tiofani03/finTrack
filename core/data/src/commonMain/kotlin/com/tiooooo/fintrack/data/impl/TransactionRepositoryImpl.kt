@@ -41,7 +41,7 @@ class TransactionRepositoryImpl(
         return transactionWalletDao.getTransactionsWithWallet().map { list ->
             list.map { transactionWithWallet ->
                 val transaction = transactionWithWallet.transaction
-                val walletName = transactionWithWallet.wallet.name
+                val walletName = transactionWithWallet.wallet?.name.orEmpty()
 
                 transaction.toItem(walletName)
             }

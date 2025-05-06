@@ -10,5 +10,5 @@ data class TransactionWithWallet(
         parentColumn = "walletId",
         entityColumn = "id"
     )
-    val wallet: WalletEntity
+    val wallet: WalletEntity?
 )

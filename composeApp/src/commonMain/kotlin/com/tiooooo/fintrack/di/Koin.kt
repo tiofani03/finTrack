@@ -1,5 +1,6 @@
 package com.tiooooo.fintrack.di
 
+import com.tiooooo.fintrack.adaptor.AuthService
 import com.tiooooo.fintrack.data.di.localModule
 import com.tiooooo.fintrack.data.di.platformModule
 import com.tiooooo.fintrack.data.di.repositoryModule
@@ -9,10 +10,13 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
+fun initKoin(
+    authService: AuthService? = null,
+    appDeclaration: KoinAppDeclaration = {},
+) = startKoin {
     appDeclaration()
     modules(
-        platformModule(),
+        platformModule(authService),
         localModule,
         repositoryModule,
         dispatcherModule,
@@ -24,4 +28,4 @@ val dispatcherModule = module {
     factory { Dispatchers.Default }
 }
 
-fun initKoin() = initKoin {}
+fun initKoin(authService: AuthService) = initKoin(authService) {}

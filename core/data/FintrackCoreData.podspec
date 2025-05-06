@@ -8,8 +8,8 @@ Pod::Spec.new do |spec|
     spec.summary                  = ''
     spec.vendored_frameworks      = 'build/cocoapods/framework/FintrackCoreData.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target    = '17.0'
-    spec.dependency 'netfox', '1.21.0'
+    spec.ios.deployment_target    = '13.0'
+                
                 
     if !Dir.exist?('build/cocoapods/framework/FintrackCoreData.framework') || Dir.empty?('build/cocoapods/framework/FintrackCoreData.framework')
         raise "

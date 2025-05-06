@@ -8,7 +8,7 @@ plugins {
 
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidxRoom)
-    alias(libs.plugins.kotlinCocoapods)
+//    alias(libs.plugins.kotlinCocoapods)
 
 }
 
@@ -30,22 +30,18 @@ kotlin {
         }
     }
 
-    cocoapods {
-        version = "1.0"
-        name = "FintrackCoreData"
-        podfile = project.file("../../iosApp/Podfile")
-
-        ios.deploymentTarget = "17.0"
-
-        framework {
-            baseName = "FintrackCoreData"
-            isStatic = true
-        }
-        pod("netfox"){
-            extraOpts += listOf("-compiler-options", "-fmodules")
-            version = "1.21.0"
-        }
-    }
+//    cocoapods {
+//        version = "1.0"
+//        name = "FintrackCoreData"
+//        podfile = project.file("../../iosApp/Podfile")
+//
+//        ios.deploymentTarget = "13.0"
+//
+//        framework {
+//            baseName = "FintrackCoreData"
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
         androidMain.dependencies {

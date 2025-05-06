@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.tiooooo.fintrack.adaptor.AuthService
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
@@ -21,12 +22,15 @@ import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_login_apple
 import fintrack.composeapp.generated.resources.ic_login_facebook
 import fintrack.composeapp.generated.resources.ic_login_google
+import multiplatform.network.cmptoast.showToast
+import org.koin.compose.getKoin
 
 @Composable
 fun OnboardBottomSheet(
     modifier: Modifier = Modifier
 ) {
     val navigator = LocalNavigator.currentOrThrow
+    val authService: AuthService = getKoin().get()
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -52,7 +56,14 @@ fun OnboardBottomSheet(
             OnboardButton(
                 painter = Res.drawable.ic_login_google,
                 onCardClicked = {
-
+                    authService.signIn("test@gmail.com", "12345") { success, err ->
+                        println("helloworld: $success $err")
+                        if (success) {
+                            navigator.replaceAll(DashboardRoute)
+                        } else {
+                            showToast(err.toString())
+                        }
+                    }
                 }
             )
             OnboardButton(
