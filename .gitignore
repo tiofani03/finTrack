@@ -51,3 +51,4 @@ composeApp/google-services.json
 **/google-services.json
 iosApp/GoogleService-Info.plist
 **/GoogleService-Info.plist
+/iosApp/Configuration/KeySecret.xcconfig
