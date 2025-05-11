@@ -1,6 +1,6 @@
 package com.tiooooo.fintrack
 
-//import com.tiooooo.fintrack.adaptor.NetfoxManager
+import com.tiooooo.fintrack.adaptor.NetfoxManager
 import platform.UIKit.UIApplication
 import kotlin.experimental.ExperimentalObjCName
 
@@ -12,7 +12,7 @@ class AppDelegateAdapter {
         application: UIApplication,
         didFinishLaunchingWithOptions: Map<Any, *>?
     ): Boolean {
-//        NetfoxManager.startNetfox()
+        NetfoxManager.startNetfox()
         return true
     }
 }

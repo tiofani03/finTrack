@@ -1,15 +1,15 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'FintrackCoreData'
     spec.version                  = '1.0'
-    spec.homepage                 = ''
+    spec.homepage                 = 'fintrack'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = ''
+    spec.summary                  = 'Some description for a Kotlin/Native module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/FintrackCoreData.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target    = '13.0'
-                
+    spec.dependency 'netfox'
                 
     if !Dir.exist?('build/cocoapods/framework/FintrackCoreData.framework') || Dir.empty?('build/cocoapods/framework/FintrackCoreData.framework')
         raise "

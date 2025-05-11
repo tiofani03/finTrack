@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
-
+    alias(libs.plugins.kotlinCocoapods)
 }
 
 kotlin {
@@ -22,7 +22,24 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "component"
+            baseName = "FintrackCoreComponent"
+            isStatic = true
+        }
+    }
+
+    cocoapods {
+        version = "1.0"
+        name = "FintrackCoreComponent"
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "fintrack"
+        podfile = project.file("../../iosApp/Podfile")
+
+        ios.deploymentTarget = "13.0"
+
+        pod("GoogleSignIn")
+
+        framework {
+            baseName = "FintrackCoreComponent"
             isStatic = true
         }
     }
@@ -37,6 +54,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.components.resources)
 
+            implementation(compose.material)
             api(compose.material3)
             api(compose.ui)
             api(compose.components.uiToolingPreview)

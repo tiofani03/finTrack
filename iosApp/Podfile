@@ -6,6 +6,8 @@ target 'iosApp' do
   use_frameworks!
 
   # Pods for iosApp
+#   pod 'FintrackCoreData', :path => '../core/data'
+#   pod 'ComposeApp', :path => '../composeApp'
   pod 'netfox'
   pod 'FirebaseCore'
   pod 'FirebaseAuth'

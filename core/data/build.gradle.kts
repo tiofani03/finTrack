@@ -8,7 +8,7 @@ plugins {
 
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidxRoom)
-//    alias(libs.plugins.kotlinCocoapods)
+    alias(libs.plugins.kotlinCocoapods)
 
 }
 
@@ -30,18 +30,24 @@ kotlin {
         }
     }
 
-//    cocoapods {
-//        version = "1.0"
-//        name = "FintrackCoreData"
-//        podfile = project.file("../../iosApp/Podfile")
-//
-//        ios.deploymentTarget = "13.0"
-//
-//        framework {
-//            baseName = "FintrackCoreData"
-//            isStatic = true
-//        }
-//    }
+    cocoapods {
+        version = "1.0"
+        name = "FintrackCoreData"
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "fintrack"
+        podfile = project.file("../../iosApp/Podfile")
+
+        ios.deploymentTarget = "13.0"
+
+        pod("netfox") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
+
+        framework {
+            baseName = "FintrackCoreData"
+            isStatic = true
+        }
+    }
 
     sourceSets {
         androidMain.dependencies {
@@ -60,12 +66,15 @@ kotlin {
             api(libs.koin.compose)
             api(libs.kotlinx.datetime)
 
-            // room
+            // room®
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
 
             //datastore
             api(libs.androidx.datastore.preferences.core)
+
+            implementation("dev.gitlive:firebase-auth:1.8.0")
+            implementation("dev.gitlive:firebase-firestore:1.8.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
