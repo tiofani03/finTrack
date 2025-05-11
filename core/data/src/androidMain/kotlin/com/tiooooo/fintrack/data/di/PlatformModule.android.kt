@@ -8,8 +8,9 @@ import com.tiooooo.fintrack.data.local.getDatabaseBuilder
 import org.koin.dsl.module
 
 actual fun platformModule(
-    authService: AuthService?
+    authService: AuthService?,
 ) = module {
     single<RoomDatabase.Builder<AppDatabase>> { getDatabaseBuilder(get()) }
     single { dataStore(get()) }
+    single { authService }
 }

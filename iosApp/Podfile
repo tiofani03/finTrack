@@ -7,6 +7,8 @@ target 'iosApp' do
 
   # Pods for iosApp
   pod 'netfox'
+  pod 'FirebaseCore'
   pod 'FirebaseAuth'
+  pod 'GoogleSignIn'
 
 end

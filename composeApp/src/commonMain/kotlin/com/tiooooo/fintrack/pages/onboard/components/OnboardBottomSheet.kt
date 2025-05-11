@@ -56,7 +56,8 @@ fun OnboardBottomSheet(
             OnboardButton(
                 painter = Res.drawable.ic_login_google,
                 onCardClicked = {
-                    authService.signIn("test@gmail.com", "12345") { success, err ->
+//                    authService.signIn("test@gmail.com", "123456") { success, err ->
+                    authService.signInWithGoogle { success, err ->
                         println("helloworld: $success $err")
                         if (success) {
                             navigator.replaceAll(DashboardRoute)

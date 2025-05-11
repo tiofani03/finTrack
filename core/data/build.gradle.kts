@@ -47,6 +47,8 @@ kotlin {
         androidMain.dependencies {
             api(libs.koin.android)
             api(libs.koin.core)
+            implementation(project.dependencies.platform("com.google.firebase:firebase-bom:33.13.0"))
+            implementation("com.google.firebase:firebase-auth-ktx")
         }
         commonMain.dependencies {
             implementation(compose.runtime)

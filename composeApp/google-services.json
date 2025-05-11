@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "37312029451",
+    "project_id": "mobile-project-1c3d0",
+    "storage_bucket": "mobile-project-1c3d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37312029451:android:bd5cb29750ef9fb9e5f80e",
+        "android_client_info": {
+          "package_name": "com.algirm.mobileproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqaDe48M8oB43DiBX_x3oNlf0Kn47KVVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37312029451:android:ffcd5a211a3c7a8be5f80e",
+        "android_client_info": {
+          "package_name": "com.tiooooo.fintrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqaDe48M8oB43DiBX_x3oNlf0Kn47KVVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
