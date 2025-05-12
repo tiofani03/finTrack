@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.component.utils
+package com.tiooooo.fintrack.data.utils
 
 import cocoapods.GoogleSignIn.GIDSignIn
 import com.tiooooo.fintrack.data.model.auth.AccountInfo
@@ -7,7 +7,7 @@ import platform.UIKit.UIApplication
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-actual class GoogleAuthUiProvider {
+actual class GoogleAuthHelper {
     @OptIn(ExperimentalForeignApi::class)
     actual suspend fun signIn(): AccountInfo? =
         suspendCoroutine { continutation ->

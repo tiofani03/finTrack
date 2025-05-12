@@ -1,6 +1,5 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -51,6 +50,10 @@ kotlin {
     }
 }
 
+val secretProperties = Properties().apply {
+    load(rootProject.file("secret.properties").inputStream())
+}
+
 android {
     namespace = "com.tiooooo.fintrack"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -61,6 +64,15 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            "String",
+            "CLIENT_ID",
+            "\"${secretProperties["CLIENT_ID"]}\""
+        )
+    }
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {

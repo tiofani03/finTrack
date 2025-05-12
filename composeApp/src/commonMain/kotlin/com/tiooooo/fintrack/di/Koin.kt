@@ -1,6 +1,5 @@
 package com.tiooooo.fintrack.di
 
-import com.tiooooo.fintrack.component.di.componentPlatformModule
 import com.tiooooo.fintrack.data.di.localModule
 import com.tiooooo.fintrack.data.di.platformModule
 import com.tiooooo.fintrack.data.di.repositoryModule
@@ -16,7 +15,6 @@ fun initKoin(
     appDeclaration()
     modules(
         platformModule(),
-        componentPlatformModule,
         localModule,
         repositoryModule,
         dispatcherModule,

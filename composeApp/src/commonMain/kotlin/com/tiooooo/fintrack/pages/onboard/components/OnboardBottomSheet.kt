@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +18,8 @@ import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium18
-import com.tiooooo.fintrack.component.utils.GoogleAuthUiProvider
+import com.tiooooo.fintrack.data.utils.GoogleAuthHelper
+import com.tiooooo.fintrack.getPlatform
 import com.tiooooo.fintrack.pages.dashboard.DashboardRoute
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_login_apple
@@ -32,7 +34,14 @@ fun OnboardBottomSheet(
     modifier: Modifier = Modifier
 ) {
     val navigator = LocalNavigator.currentOrThrow
-    val googleAuthUiProvider: GoogleAuthUiProvider = getKoin().get()
+    val koin = getKoin()
+    val googleAuthHelper: GoogleAuthHelper = remember {
+        if (getPlatform().isAndroid) {
+            koin.getScope("activity_scope").get()
+        } else {
+            koin.get()
+        }
+    }
     val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = modifier,
@@ -59,18 +68,9 @@ fun OnboardBottomSheet(
             OnboardButton(
                 painter = Res.drawable.ic_login_google,
                 onCardClicked = {
-//                    authService.signIn("test@gmail.com", "123456") { success, err ->
-//                    authService.signInWithGoogle { success, err ->
-//                        println("helloworld: $success $err")
-//                        if (success) {
-//                            navigator.replaceAll(DashboardRoute)
-//                        } else {
-//                            showToast(err.toString())
-//                        }
-//                    }
                     coroutineScope.launch {
-                        val user = googleAuthUiProvider.signIn()
-                        showToast(user.toString())
+                        val user = googleAuthHelper.signIn()
+                        if (user != null) navigator.replaceAll(DashboardRoute)
                     }
                 }
             )

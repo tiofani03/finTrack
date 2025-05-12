@@ -1,7 +1,7 @@
-package com.tiooooo.fintrack.component.utils
+package com.tiooooo.fintrack.data.utils
 
 import com.tiooooo.fintrack.data.model.auth.AccountInfo
 
-expect class GoogleAuthUiProvider {
+expect class GoogleAuthHelper {
    suspend fun signIn(): AccountInfo?
 }
