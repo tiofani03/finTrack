@@ -26,7 +26,6 @@ import fintrack.composeapp.generated.resources.ic_login_apple
 import fintrack.composeapp.generated.resources.ic_login_facebook
 import fintrack.composeapp.generated.resources.ic_login_google
 import kotlinx.coroutines.launch
-import multiplatform.network.cmptoast.showToast
 import org.koin.compose.getKoin
 
 @Composable
