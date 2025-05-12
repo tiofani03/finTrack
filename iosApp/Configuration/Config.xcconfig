@@ -1,3 +1,5 @@
 TEAM_ID=
 BUNDLE_ID=com.tiooooo.fintrack.finTrack
 APP_NAME=finTrack
+
+#include? "KeySecret.xcconfig"

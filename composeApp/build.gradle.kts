@@ -1,12 +1,12 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("com.google.gms.google-services")
 }
 
 kotlin {
@@ -32,6 +32,8 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(project.dependencies.platform("com.google.firebase:firebase-bom:33.13.0"))
+            implementation("com.google.firebase:firebase-auth-ktx")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -48,6 +50,10 @@ kotlin {
     }
 }
 
+val secretProperties = Properties().apply {
+    load(rootProject.file("secret.properties").inputStream())
+}
+
 android {
     namespace = "com.tiooooo.fintrack"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -58,6 +64,15 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            "String",
+            "CLIENT_ID",
+            "\"${secretProperties["CLIENT_ID"]}\""
+        )
+    }
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {

@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -33,17 +34,20 @@ kotlin {
     cocoapods {
         version = "1.0"
         name = "FintrackCoreData"
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "fintrack"
         podfile = project.file("../../iosApp/Podfile")
 
-        ios.deploymentTarget = "17.0"
+        ios.deploymentTarget = "13.0"
+
+        pod("netfox") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
+        pod("GoogleSignIn")
 
         framework {
             baseName = "FintrackCoreData"
             isStatic = true
-        }
-        pod("netfox"){
-            extraOpts += listOf("-compiler-options", "-fmodules")
-            version = "1.21.0"
         }
     }
 
@@ -51,6 +55,7 @@ kotlin {
         androidMain.dependencies {
             api(libs.koin.android)
             api(libs.koin.core)
+            implementation("com.google.android.gms:play-services-auth:21.0.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -68,6 +73,10 @@ kotlin {
 
             //datastore
             api(libs.androidx.datastore.preferences.core)
+
+            // kmp firebase
+            implementation("dev.gitlive:firebase-auth:1.8.0")
+            implementation("dev.gitlive:firebase-firestore:1.8.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -90,12 +99,24 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+val secretProperties = Properties().apply {
+    load(rootProject.file("secret.properties").inputStream())
+}
 
 android {
     namespace = "com.tiooooo.fintrack.core.data"
     compileSdk = 35
     defaultConfig {
         minSdk = 24
+
+        buildConfigField(
+            "String",
+            "CLIENT_ID",
+            "\"${secretProperties["CLIENT_ID"]}\""
+        )
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
