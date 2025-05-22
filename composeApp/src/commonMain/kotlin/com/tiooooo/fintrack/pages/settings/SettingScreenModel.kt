@@ -42,6 +42,9 @@ class SettingScreenModel(
             is SettingIntent.UpdateTheme -> {
                 datastoreRepository.setThemeApplication(intent.value)
             }
+            is SettingIntent.ExecuteLogout -> {
+                sendEffect(SettingEffect.NavigateToLogin)
+            }
 
             else -> Unit
         }

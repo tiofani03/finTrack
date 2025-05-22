@@ -32,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -52,6 +53,8 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium16
+import com.tiooooo.fintrack.helper.LocalGoogleAuthHelper
+import com.tiooooo.fintrack.pages.onboard.OnboardRoute
 import com.tiooooo.fintrack.pages.settings.component.ChooseThemeDialog
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_login_google
@@ -65,6 +68,18 @@ fun SettingScreen(
     val listState by settingScreenModel.lazyListState.collectAsState()
     val navigator = LocalNavigator.currentOrThrow
     val state by settingScreenModel.state.collectAsState()
+    val googleAuthHelper = LocalGoogleAuthHelper.current
+
+    LaunchedEffect(Unit) {
+        settingScreenModel.effect.collect { effect ->
+            when (effect) {
+                is SettingEffect.NavigateToLogin -> {
+                    googleAuthHelper.signOut()
+                    navigator.replaceAll(OnboardRoute)
+                }
+            }
+        }
+    }
 
     BaseScaffold(
         modifier = modifier,
@@ -103,6 +118,24 @@ fun SettingScreen(
                                 settingScreenModel.dispatch(it)
                             }
                         })
+                }
+                item {
+                    SectionList(
+                        title = "",
+                        items = listOf(
+                            ProfileItem(
+                                "Logout",
+                                null,
+                                null,
+                                SettingIntent.ExecuteLogout
+                            ),
+                        ),
+                        onItemClicked = { item ->
+                            item.intent?.let {
+                                settingScreenModel.dispatch(it)
+                            }
+                        }
+                    )
                 }
                 item { Spacer(modifier = Modifier.height(80.dp)) }
             }
@@ -238,7 +271,9 @@ fun ProfileListItem(
             .padding(MEDIUM_PADDING),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(imageVector = item.icon, contentDescription = item.title)
+        item.icon?.let {
+            Icon(imageVector = item.icon, contentDescription = item.title)
+        }
         Spacer(modifier = Modifier.width(MEDIUM_PADDING))
 
         Text(
@@ -270,7 +305,7 @@ fun ProfileListItem(
 
 data class ProfileItem(
     val title: String,
-    val icon: ImageVector,
+    val icon: ImageVector? = null,
     val actionText: String? = null,
     val intent: SettingIntent? = null
 )

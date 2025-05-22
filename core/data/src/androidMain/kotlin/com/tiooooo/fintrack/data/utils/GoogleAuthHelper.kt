@@ -64,4 +64,22 @@ actual class GoogleAuthHelper(
         }
         launchSignIn()
     }
+
+    actual fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        GoogleSignIn.getClient(activity, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+        launcher?.unregister()
+        launcher = null
+    }
+
+    actual fun getAccountInfo(): AccountInfo? {
+        FirebaseAuth.getInstance().currentUser?.let { user ->
+            return AccountInfo(
+                token = user.uid,
+                displayName = user.displayName.orEmpty(),
+                profileImageUrl = user.photoUrl.toString()
+            )
+        }
+        return null
+    }
 }

@@ -1,15 +1,22 @@
 package com.tiooooo.fintrack.pages.splash
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.navigator.Navigator
-import com.tiooooo.fintrack.pages.onboard.OnboardRoute
+import com.tiooooo.fintrack.component.base.BaseScreenModel
 
-class SplashScreenModel(
-    private val navigator: Navigator,
-) : ScreenModel {
-    val delayTime = 1000L
+class SplashScreenModel : BaseScreenModel<SplashState, SplashIntent, SplashEffect>(SplashState()) {
 
-    fun navigateToOnboardPage() {
-        navigator.replace(OnboardRoute)
+    override fun reducer(state: SplashState, intent: SplashIntent): SplashState {
+        return state
+    }
+
+    override suspend fun handleIntentSideEffect(intent: SplashIntent) {
+        when (intent) {
+            is SplashIntent.NavigateToOnboard -> {
+                sendEffect(SplashEffect.NavigateToOnboard)
+            }
+
+            is SplashIntent.NavigateToDashboard -> {
+                sendEffect(SplashEffect.NavigateToDashboard)
+            }
+        }
     }
 }

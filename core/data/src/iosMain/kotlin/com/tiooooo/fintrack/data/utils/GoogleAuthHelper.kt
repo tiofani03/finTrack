@@ -50,4 +50,22 @@ actual class GoogleAuthHelper {
             continuation.resume(null)
         }
     }
+
+    @OptIn(ExperimentalForeignApi::class)
+    actual fun signOut() {
+        GIDSignIn.sharedInstance.signOut()
+        FIRAuth.auth().signOut(null)
+    }
+
+    @OptIn(ExperimentalForeignApi::class)
+    actual fun getAccountInfo(): AccountInfo? {
+        val currentUser = FIRAuth.auth().currentUser
+        return currentUser?.let { user ->
+            AccountInfo(
+                token = user.tenantID.orEmpty(),
+                displayName = user.displayName ?: GIDSignIn.sharedInstance.currentUser?.profile?.name.orEmpty(),
+                profileImageUrl = user.photoURL?.absoluteString ?: GIDSignIn.sharedInstance.currentUser?.profile?.imageURLWithDimension(320u)?.absoluteString
+            )
+        }
+    }
 }

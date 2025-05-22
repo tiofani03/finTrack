@@ -13,25 +13,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium20
+import com.tiooooo.fintrack.helper.LocalGoogleAuthHelper
+import com.tiooooo.fintrack.pages.dashboard.DashboardRoute
+import com.tiooooo.fintrack.pages.onboard.OnboardRoute
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.compose_multiplatform
 import kotlinx.coroutines.delay
@@ -43,24 +45,47 @@ fun SplashScreen(
     modifier: Modifier = Modifier,
     splashScreenModel: SplashScreenModel,
 ) {
-    var isVisibleLogo by remember { mutableStateOf(false) }
-    var isVisibleTitle by remember { mutableStateOf(false) }
-    var isVisibleSubtitle by remember { mutableStateOf(false) }
+    val navigator = LocalNavigator.currentOrThrow
+    val googleAuthHelper = LocalGoogleAuthHelper.current
 
+    // Animation specs
     val fadeInSpec = fadeIn(animationSpec = tween(durationMillis = 600, easing = EaseOutCubic))
     val slideInSpec = slideInVertically(
-        initialOffsetY = { fullHeight -> fullHeight / 4 },
+        initialOffsetY = { it / 4 },
         animationSpec = tween(durationMillis = 600, easing = EaseIn)
     )
+    val enterAnim = fadeInSpec + slideInSpec
+
+    // Visibility state
+    val (logoVisible, setLogoVisible) = remember { mutableStateOf(false) }
+    val (titleVisible, setTitleVisible) = remember { mutableStateOf(false) }
+    val (subtitleVisible, setSubtitleVisible) = remember { mutableStateOf(false) }
+
+    // Handle animation sequence + navigation decision
     LaunchedEffect(Unit) {
         delay(400)
-        isVisibleLogo = true
+        setLogoVisible(true)
         delay(300)
-        isVisibleTitle = true
+        setTitleVisible(true)
         delay(250)
-        isVisibleSubtitle = true
-        delay(splashScreenModel.delayTime)
-        splashScreenModel.navigateToOnboardPage()
+        setSubtitleVisible(true)
+        delay(500)
+
+        val account = googleAuthHelper.getAccountInfo()
+        splashScreenModel.dispatch(
+            if (account != null) SplashIntent.NavigateToDashboard
+            else SplashIntent.NavigateToOnboard
+        )
+    }
+
+    // Handle navigation effect
+    LaunchedEffect(Unit) {
+        splashScreenModel.effect.collect { effect ->
+            when (effect) {
+                is SplashEffect.NavigateToOnboard -> navigator.replaceAll(OnboardRoute)
+                is SplashEffect.NavigateToDashboard -> navigator.replaceAll(DashboardRoute)
+            }
+        }
     }
 
     BaseScaffold { paddingValues ->
@@ -74,10 +99,7 @@ fun SplashScreen(
                     .align(Alignment.Center)
                     .padding(bottom = MEDIUM_PADDING),
             ) {
-                AnimatedVisibility(
-                    visible = isVisibleLogo,
-                    enter = fadeInSpec + slideInSpec
-                ) {
+                AnimatedVisibility(visible = logoVisible, enter = enterAnim) {
                     Image(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -88,52 +110,42 @@ fun SplashScreen(
                     )
                 }
 
-                AnimatedVisibility(
-                    visible = isVisibleTitle,
-                ) {
+                AnimatedVisibility(visible = titleVisible) {
                     Text(
                         modifier = Modifier
-                            .wrapContentWidth()
-                            .padding(
-                                vertical = SMALL_PADDING,
-                                horizontal = EXTRA_LARGE_PADDING,
-                            )
-                            .align(Alignment.CenterHorizontally),
+                            .align(Alignment.CenterHorizontally)
+                            .padding(vertical = SMALL_PADDING, horizontal = EXTRA_LARGE_PADDING),
                         text = "FinTrack",
                         style = textMedium20().copy(
                             fontWeight = FontWeight.Bold,
                             color = Color.White
-                        )
+                        ),
                     )
                 }
 
-                AnimatedVisibility(
-                    visible = isVisibleSubtitle,
-                ) {
+                AnimatedVisibility(visible = subtitleVisible) {
                     Text(
                         modifier = Modifier
-                            .wrapContentWidth()
-                            .padding(horizontal = EXTRA_LARGE_PADDING)
-                            .align(Alignment.CenterHorizontally),
+                            .align(Alignment.CenterHorizontally)
+                            .padding(horizontal = EXTRA_LARGE_PADDING),
                         text = "Gak Cuma Gaya, Keuangan Juga Harus Keren",
                         style = textMedium12().copy(
                             fontWeight = FontWeight.Light,
                             color = Color.White
-                        )
+                        ),
                     )
                 }
             }
 
             Text(
                 modifier = Modifier
-                    .wrapContentWidth()
-                    .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING)
-                    .align(Alignment.BottomCenter),
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING),
                 text = "Versi 1.0.0",
                 style = textMedium12().copy(
                     fontWeight = FontWeight.Normal,
                     color = Color.White
-                )
+                ),
             )
         }
     }
