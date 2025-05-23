@@ -4,23 +4,25 @@ agp = "8.5.2"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "34"
-androidx-activityCompose = "1.9.3"
+androidx-activityCompose = "1.10.1"
 androidx-appcompat = "1.7.0"
-androidx-constraintlayout = "2.2.0"
-androidx-core-ktx = "1.15.0"
+androidx-constraintlayout = "2.2.1"
+androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 cmptoast = "1.0.4"
-compose-multiplatform = "1.7.0"
+compose-multiplatform = "1.8.0"
 datastorePreferencesCore = "1.1.0"
+gitlive = "1.8.0"
 junit = "4.13.2"
 kotlin = "2.1.21-RC"
 kotlinx-coroutines = "1.10.1"
-imageLoader = "1.7.1"
+imageLoader = "1.8.1"
 kotlinxDatetime = "0.6.2"
 material3WindowSizeClass = "1.7.3"
+playServicesAuth = "21.0.0"
 pullrefresh = "1.4.0-beta03"
 voyager = "1.1.0-beta03"
 koin = "4.0.0"
@@ -30,6 +32,7 @@ room = "2.7.0"
 #ksp = "2.0.21-1.0.28"
 ksp = "2.1.21-RC-2.0.0"
 sqlite = "2.5.0"
+googleGms = "4.4.2"
 
 [libraries]
 adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
@@ -37,6 +40,9 @@ adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-
 adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "adaptive" }
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferencesCore" }
 cmptoast = { module = "network.chaintech:cmptoast", version.ref = "cmptoast" }
+gitlive-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "gitlive" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
+gitlive-firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "gitlive" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -53,6 +59,7 @@ image-loader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imag
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 material3-window-size-class1 = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "material3WindowSizeClass" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 pullrefresh = { module = "dev.materii.pullrefresh:pullrefresh", version.ref = "pullrefresh" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
@@ -82,3 +89,4 @@ kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versio
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidxRoom = { id = "androidx.room", version.ref = "room" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+googleGms = { id = "com.google.gms.google-services", version.ref = "googleGms" }

@@ -55,7 +55,7 @@ kotlin {
         androidMain.dependencies {
             api(libs.koin.android)
             api(libs.koin.core)
-            implementation("com.google.android.gms:play-services-auth:21.0.0")
+            implementation(libs.play.services.auth)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -75,8 +75,8 @@ kotlin {
             api(libs.androidx.datastore.preferences.core)
 
             // kmp firebase
-            implementation("dev.gitlive:firebase-auth:1.8.0")
-            implementation("dev.gitlive:firebase-firestore:1.8.0")
+            implementation(libs.gitlive.firebase.auth)
+            implementation(libs.gitlive.firebase.firestore)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

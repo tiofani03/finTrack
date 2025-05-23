@@ -18,30 +18,22 @@ import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium18
-import com.tiooooo.fintrack.data.utils.GoogleAuthHelper
-import com.tiooooo.fintrack.getPlatform
+import com.tiooooo.fintrack.helper.LocalGoogleAuthHelper
 import com.tiooooo.fintrack.pages.dashboard.DashboardRoute
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_login_apple
 import fintrack.composeapp.generated.resources.ic_login_facebook
 import fintrack.composeapp.generated.resources.ic_login_google
 import kotlinx.coroutines.launch
-import org.koin.compose.getKoin
 
 @Composable
 fun OnboardBottomSheet(
     modifier: Modifier = Modifier
 ) {
     val navigator = LocalNavigator.currentOrThrow
-    val koin = getKoin()
-    val googleAuthHelper: GoogleAuthHelper = remember {
-        if (getPlatform().isAndroid) {
-            koin.getScope("activity_scope").get()
-        } else {
-            koin.get()
-        }
-    }
+    val googleAuthHelper = LocalGoogleAuthHelper.current
     val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
