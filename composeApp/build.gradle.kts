@@ -44,8 +44,14 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.koin.core)
+
             implementation(project(":core:component"))
             implementation(project(":core:data"))
+            implementation(project(":core:navigation"))
+
+            implementation(project(":feature:auth"))
+            implementation(project(":feature:dashboard"))
         }
     }
 }

@@ -7,5 +7,5 @@ import com.tiooooo.fintrack.pages.wallet.di.walletModule
 val pagesModule = listOf(
     homeModule,
     walletModule,
-    transactionModule
+    transactionModule,
 )
