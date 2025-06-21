@@ -31,3 +31,6 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":core:component")
 include(":core:data")
+include(":core:navigation")
+include(":feature:auth")
+include(":feature:dashboard")
