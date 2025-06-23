@@ -7,7 +7,7 @@ import com.tiooooo.fintrack.navigation.helper.FeatureModule
 import com.tiooooo.fintrack.navigation.Route
 import com.tiooooo.fintrack.navigation.RouteRegistry
 
-object DashboardFeature : FeatureModule {
+object DashboardNavigation : FeatureModule {
   override fun registerRoutes() {
     RouteRegistry.register(
       Route("/dashboard") { SampleDashboardScreen() }

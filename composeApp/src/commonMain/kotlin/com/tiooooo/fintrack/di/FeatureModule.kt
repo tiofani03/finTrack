@@ -1,13 +1,15 @@
 package com.tiooooo.fintrack.di
 
-import com.tiooooo.fintrack.auth.di.featureAuthModule
-import com.tiooooo.fintrack.feature.dashboard.di.featureDashboardModule
+import com.tiooooo.fintrack.auth.di.authModule
+import com.tiooooo.fintrack.feature.dashboard.di.DashboardModule
 import com.tiooooo.fintrack.navigation.RouteResolver
+import com.tiooooo.fintrack.pages.di.mainNavigationModule
 import org.koin.dsl.module
 
 val featureModules = listOf(
-  featureDashboardModule,
-  featureAuthModule
+  mainNavigationModule,
+  DashboardModule,
+  authModule
 )
 
 val navigationModule = module {

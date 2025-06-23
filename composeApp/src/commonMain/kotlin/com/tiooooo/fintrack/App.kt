@@ -25,7 +25,7 @@ fun App() {
   ProvideGoogleAuthHelper {
     FinTrackTheme(darkTheme) {
       Navigator(
-        screen = routeResolver.require("/auth/login"),
+        screen = routeResolver.require("/splash"),
         disposeBehavior = NavigatorDisposeBehavior(),
         onBackPressed = { true },
       ) { nav ->

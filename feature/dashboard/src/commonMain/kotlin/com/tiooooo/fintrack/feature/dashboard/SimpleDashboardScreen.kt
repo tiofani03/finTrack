@@ -20,7 +20,7 @@ class SampleDashboardScreen : Screen {
       Column(modifier = Modifier.fillMaxSize().padding(it)) {
         Text(text = "Sample Dashboard Screen")
         Button(onClick = {
-          nav.navigate("/main")
+          nav.replaceAll("/main")
         }) {
           Text(text = "Dashboard")
         }

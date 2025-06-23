@@ -18,6 +18,37 @@ class NavigationHelper(
       navigator.push(screen)
     } ?: navigator.push(DefaultNotFoundScreen())
   }
+
+  fun replace(path: String) {
+    resolver.resolve(path)?.let { screen ->
+      navigator.replace(screen)
+    } ?: navigator.push(DefaultNotFoundScreen())
+  }
+
+  fun replaceAll(path: String) {
+    resolver.resolve(path)?.let { screen ->
+      navigator.replaceAll(screen)
+    } ?: navigator.push(DefaultNotFoundScreen())
+  }
+
+  fun pop() {
+    if (navigator.canPop) {
+      navigator.pop()
+    }
+  }
+
+  fun popAll() {
+    if (navigator.canPop) {
+      navigator.popAll()
+    }
+  }
+
+  fun popUntil(predicate: (Screen) -> Boolean) {
+    if (navigator.canPop) {
+      navigator.popUntil(predicate)
+    }
+  }
+
   fun resolve(path: String): Screen = resolver.require(path)
 }
 
