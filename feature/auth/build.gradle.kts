@@ -29,8 +29,8 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            api(libs.koin.android)
-            api(libs.koin.core)
+            implementation(libs.koin.android)
+            implementation(libs.koin.core)
             implementation(libs.play.services.auth)
         }
         commonMain.dependencies {
@@ -38,16 +38,17 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.components.resources)
 
-            api(libs.koin.core)
-            api(libs.koin.test)
-            api(libs.koin.compose)
+            implementation(libs.koin.core)
+            implementation(libs.koin.test)
+            implementation(libs.koin.compose)
+            implementation(compose.material)
 
-            api(libs.voyager.navigator)
-            api(libs.voyager.screenModel)
-            api(libs.voyager.transitions)
-            api(libs.voyager.tabNavigator)
-            api(libs.voyager.bottomSheetNavigator)
-            api(libs.voyager.viewmodelKmp)
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenModel)
+            implementation(libs.voyager.transitions)
+            implementation(libs.voyager.tabNavigator)
+            implementation(libs.voyager.bottomSheetNavigator)
+            implementation(libs.voyager.viewmodelKmp)
 
             implementation(project(":core:component"))
             implementation(project(":core:navigation"))

@@ -53,3 +53,5 @@ iosApp/GoogleService-Info.plist
 **/GoogleService-Info.plist
 /iosApp/Configuration/KeySecret.xcconfig
 /secret.properties
+/composeApp/debug/
+/composeApp/release/

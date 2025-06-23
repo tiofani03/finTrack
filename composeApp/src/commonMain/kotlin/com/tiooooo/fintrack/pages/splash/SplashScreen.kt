@@ -23,8 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
@@ -32,8 +30,7 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium20
 import com.tiooooo.fintrack.helper.LocalGoogleAuthHelper
-import com.tiooooo.fintrack.pages.dashboard.DashboardRoute
-import com.tiooooo.fintrack.pages.onboard.OnboardRoute
+import com.tiooooo.fintrack.navigation.rememberNavHelper
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.compose_multiplatform
 import kotlinx.coroutines.delay
@@ -42,111 +39,116 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SplashScreen(
-    modifier: Modifier = Modifier,
-    splashScreenModel: SplashScreenModel,
+  modifier: Modifier = Modifier,
+  splashScreenModel: SplashScreenModel,
 ) {
-    val navigator = LocalNavigator.currentOrThrow
-    val googleAuthHelper = LocalGoogleAuthHelper.current
+  val navigator = rememberNavHelper()
+  val googleAuthHelper = LocalGoogleAuthHelper.current
 
-    // Animation specs
-    val fadeInSpec = fadeIn(animationSpec = tween(durationMillis = 600, easing = EaseOutCubic))
-    val slideInSpec = slideInVertically(
-        initialOffsetY = { it / 4 },
-        animationSpec = tween(durationMillis = 600, easing = EaseIn)
+  // Animation specs
+  val fadeInSpec = fadeIn(animationSpec = tween(durationMillis = 600, easing = EaseOutCubic))
+  val slideInSpec = slideInVertically(
+    initialOffsetY = { it / 4 },
+    animationSpec = tween(durationMillis = 600, easing = EaseIn)
+  )
+  val enterAnim = fadeInSpec + slideInSpec
+
+  // Visibility state
+  val (logoVisible, setLogoVisible) = remember { mutableStateOf(false) }
+  val (titleVisible, setTitleVisible) = remember { mutableStateOf(false) }
+  val (subtitleVisible, setSubtitleVisible) = remember { mutableStateOf(false) }
+
+  // Handle animation sequence + navigation decision
+  LaunchedEffect(Unit) {
+    delay(400)
+    setLogoVisible(true)
+    delay(300)
+    setTitleVisible(true)
+    delay(250)
+    setSubtitleVisible(true)
+    delay(500)
+
+    val account = googleAuthHelper.getAccountInfo()
+    splashScreenModel.dispatch(
+      if (account != null) SplashIntent.NavigateToDashboard
+      else SplashIntent.NavigateToOnboard
     )
-    val enterAnim = fadeInSpec + slideInSpec
+  }
 
-    // Visibility state
-    val (logoVisible, setLogoVisible) = remember { mutableStateOf(false) }
-    val (titleVisible, setTitleVisible) = remember { mutableStateOf(false) }
-    val (subtitleVisible, setSubtitleVisible) = remember { mutableStateOf(false) }
-
-    // Handle animation sequence + navigation decision
-    LaunchedEffect(Unit) {
-        delay(400)
-        setLogoVisible(true)
-        delay(300)
-        setTitleVisible(true)
-        delay(250)
-        setSubtitleVisible(true)
-        delay(500)
-
-        val account = googleAuthHelper.getAccountInfo()
-        splashScreenModel.dispatch(
-            if (account != null) SplashIntent.NavigateToDashboard
-            else SplashIntent.NavigateToOnboard
-        )
-    }
-
-    // Handle navigation effect
-    LaunchedEffect(Unit) {
-        splashScreenModel.effect.collect { effect ->
-            when (effect) {
-                is SplashEffect.NavigateToOnboard -> navigator.replaceAll(OnboardRoute)
-                is SplashEffect.NavigateToDashboard -> navigator.replaceAll(DashboardRoute)
-            }
+  // Handle navigation effect
+  LaunchedEffect(Unit) {
+    splashScreenModel.effect.collect { effect ->
+      when (effect) {
+        is SplashEffect.NavigateToOnboard -> {
+          navigator.replaceAll("/auth/onboard")
         }
-    }
 
-    BaseScaffold { paddingValues ->
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center)
-                    .padding(bottom = MEDIUM_PADDING),
-            ) {
-                AnimatedVisibility(visible = logoVisible, enter = enterAnim) {
-                    Image(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .padding(horizontal = EXTRA_LARGE_PADDING),
-                        painter = painterResource(Res.drawable.compose_multiplatform),
-                        contentDescription = null,
-                    )
-                }
-
-                AnimatedVisibility(visible = titleVisible) {
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(vertical = SMALL_PADDING, horizontal = EXTRA_LARGE_PADDING),
-                        text = "FinTrack",
-                        style = textMedium20().copy(
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        ),
-                    )
-                }
-
-                AnimatedVisibility(visible = subtitleVisible) {
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(horizontal = EXTRA_LARGE_PADDING),
-                        text = "Gak Cuma Gaya, Keuangan Juga Harus Keren",
-                        style = textMedium12().copy(
-                            fontWeight = FontWeight.Light,
-                            color = Color.White
-                        ),
-                    )
-                }
-            }
-
-            Text(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING),
-                text = "Versi 1.0.0",
-                style = textMedium12().copy(
-                    fontWeight = FontWeight.Normal,
-                    color = Color.White
-                ),
-            )
+        is SplashEffect.NavigateToDashboard -> {
+          navigator.replaceAll("/auth/onboard")
         }
+      }
     }
+  }
+
+  BaseScaffold { paddingValues ->
+    Box(
+      modifier = modifier.fillMaxSize(),
+      contentAlignment = Alignment.Center
+    ) {
+      Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .align(Alignment.Center)
+          .padding(bottom = MEDIUM_PADDING),
+      ) {
+        AnimatedVisibility(visible = logoVisible, enter = enterAnim) {
+          Image(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(200.dp)
+              .padding(horizontal = EXTRA_LARGE_PADDING),
+            painter = painterResource(Res.drawable.compose_multiplatform),
+            contentDescription = null,
+          )
+        }
+
+        AnimatedVisibility(visible = titleVisible) {
+          Text(
+            modifier = Modifier
+              .align(Alignment.CenterHorizontally)
+              .padding(vertical = SMALL_PADDING, horizontal = EXTRA_LARGE_PADDING),
+            text = "FinTrack",
+            style = textMedium20().copy(
+              fontWeight = FontWeight.Bold,
+              color = Color.White
+            ),
+          )
+        }
+
+        AnimatedVisibility(visible = subtitleVisible) {
+          Text(
+            modifier = Modifier
+              .align(Alignment.CenterHorizontally)
+              .padding(horizontal = EXTRA_LARGE_PADDING),
+            text = "Gak Cuma Gaya, Keuangan Juga Harus Keren",
+            style = textMedium12().copy(
+              fontWeight = FontWeight.Light,
+              color = Color.White
+            ),
+          )
+        }
+      }
+
+      Text(
+        modifier = Modifier
+          .align(Alignment.BottomCenter)
+          .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING),
+        text = "Versi 1.0.0",
+        style = textMedium12().copy(
+          fontWeight = FontWeight.Normal,
+          color = Color.White
+        ),
+      )
+    }
+  }
 }
