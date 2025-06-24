@@ -53,7 +53,6 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium16
-import com.tiooooo.fintrack.helper.LocalGoogleAuthHelper
 import com.tiooooo.fintrack.pages.onboard.OnboardRoute
 import com.tiooooo.fintrack.pages.settings.component.ChooseThemeDialog
 import fintrack.composeapp.generated.resources.Res
@@ -68,13 +67,11 @@ fun SettingScreen(
     val listState by settingScreenModel.lazyListState.collectAsState()
     val navigator = LocalNavigator.currentOrThrow
     val state by settingScreenModel.state.collectAsState()
-    val googleAuthHelper = LocalGoogleAuthHelper.current
 
     LaunchedEffect(Unit) {
         settingScreenModel.effect.collect { effect ->
             when (effect) {
                 is SettingEffect.NavigateToLogin -> {
-                    googleAuthHelper.signOut()
                     navigator.replaceAll(OnboardRoute)
                 }
             }

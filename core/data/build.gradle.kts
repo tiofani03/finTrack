@@ -9,7 +9,6 @@ plugins {
 
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidxRoom)
-    alias(libs.plugins.kotlinCocoapods)
 
 }
 
@@ -26,26 +25,6 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "FintrackCoreData"
-            isStatic = true
-        }
-    }
-
-    cocoapods {
-        version = "1.0"
-        name = "FintrackCoreData"
-        summary = "Some description for a Kotlin/Native module"
-        homepage = "fintrack"
-        podfile = project.file("../../iosApp/Podfile")
-
-        ios.deploymentTarget = "13.0"
-
-        pod("netfox") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
-        pod("GoogleSignIn")
-
-        framework {
             baseName = "FintrackCoreData"
             isStatic = true
         }

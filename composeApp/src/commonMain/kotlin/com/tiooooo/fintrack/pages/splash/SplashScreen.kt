@@ -29,7 +29,7 @@ import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium20
-import com.tiooooo.fintrack.helper.LocalGoogleAuthHelper
+import com.tiooooo.fintrack.getPlatform
 import com.tiooooo.fintrack.navigation.rememberNavHelper
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.compose_multiplatform
@@ -43,7 +43,6 @@ fun SplashScreen(
   splashScreenModel: SplashScreenModel,
 ) {
   val navigator = rememberNavHelper()
-  val googleAuthHelper = LocalGoogleAuthHelper.current
 
   // Animation specs
   val fadeInSpec = fadeIn(animationSpec = tween(durationMillis = 600, easing = EaseOutCubic))
@@ -68,10 +67,8 @@ fun SplashScreen(
     setSubtitleVisible(true)
     delay(500)
 
-    val account = googleAuthHelper.getAccountInfo()
     splashScreenModel.dispatch(
-      if (account != null) SplashIntent.NavigateToDashboard
-      else SplashIntent.NavigateToOnboard
+      SplashIntent.NavigateToOnboard
     )
   }
 
@@ -143,7 +140,7 @@ fun SplashScreen(
         modifier = Modifier
           .align(Alignment.BottomCenter)
           .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING),
-        text = "Versi 1.0.0",
+        text = "Versi 1.0.0 " + getPlatform().serverId,
         style = textMedium12().copy(
           fontWeight = FontWeight.Normal,
           color = Color.White

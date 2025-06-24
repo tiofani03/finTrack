@@ -1,10 +1,10 @@
 package com.tiooooo.fintrack
 
-import platform.UIKit.UIDevice
+import platform.Foundation.NSBundle
 
-class IOSPlatform: Platform {
-    override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
-    override val isAndroid = false
+class IOSPlatform : Platform {
+  override val serverId: String =
+    NSBundle.mainBundle.infoDictionary?.get("GIDServerClientId") as? String ?: ""
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()

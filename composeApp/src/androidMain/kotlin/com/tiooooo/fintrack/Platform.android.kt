@@ -3,8 +3,7 @@ package com.tiooooo.fintrack
 import android.os.Build
 
 class AndroidPlatform : Platform {
-    override val name: String = "Android ${Build.VERSION.SDK_INT}"
-    override val isAndroid = true
+    override val serverId: String = BuildConfig.CLIENT_ID
 }
 
 actual fun getPlatform(): Platform = AndroidPlatform()

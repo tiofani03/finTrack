@@ -52,6 +52,9 @@ kotlin {
 
             implementation(project(":feature:auth"))
             implementation(project(":feature:dashboard"))
+
+            implementation(libs.auth.kmp)
+            implementation(libs.auth.firebase.kmp)
         }
     }
 }
