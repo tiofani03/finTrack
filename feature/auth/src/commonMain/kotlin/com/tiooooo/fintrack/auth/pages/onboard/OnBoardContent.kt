@@ -38,6 +38,9 @@ import com.tiooooo.fintrack.component.theme.primaryLight
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium20
 import kotlinx.coroutines.delay
+import multiplatform.network.cmptoast.ToastDuration
+import multiplatform.network.cmptoast.ToastGravity
+import multiplatform.network.cmptoast.showToast
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -49,6 +52,22 @@ fun OnboardContent(
   val listOfText = onboardScreenModel.listOfText
 
   var isVisibleBottomSheet by remember { mutableStateOf(false) }
+
+  LaunchedEffect(Unit) {
+    onboardScreenModel.effect.collect {
+      when (it) {
+        is OnBoardEffect.ShowToast -> {
+          showToast(
+            message = it.message,
+            gravity = ToastGravity.Bottom,
+            duration = ToastDuration.Short
+          )
+        }
+
+        else -> Unit
+      }
+    }
+  }
 
   LaunchedEffect(Unit) {
     delay(200)
@@ -144,6 +163,13 @@ fun OnboardContent(
               ),
               color = MaterialTheme.colorScheme.background,
             ),
+          onGoogleResult = { result ->
+            result.onSuccess {
+              onboardScreenModel.dispatch(OnBoardIntent.ShowSuccessToast("Berhasil masuk dengan akun Google!"))
+            }.onFailure { error ->
+              onboardScreenModel.dispatch(OnBoardIntent.ShowToast(error.message.orEmpty()))
+            }
+          }
         )
       }
     }

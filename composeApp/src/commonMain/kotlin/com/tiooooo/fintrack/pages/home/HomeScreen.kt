@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
-import com.tiooooo.fintrack.helper.LocalGoogleAuthHelper
 import com.tiooooo.fintrack.pages.home.components.SectionCardTotal
 import com.tiooooo.fintrack.pages.home.components.SectionCashFlow
 import com.tiooooo.fintrack.pages.home.components.SectionLatestTransaction
@@ -33,7 +32,6 @@ fun HomeScreen(
     val scrollOffset = state.listState.firstVisibleItemIndex
     val scrollOffsetPx = state.listState.firstVisibleItemScrollOffset
     val isScrolled = scrollOffset > 0 || scrollOffsetPx > 0
-    val googleAuthHelper = LocalGoogleAuthHelper.current
 
     LaunchedEffect(Unit) {
         homeScreenModel.effect.collect { effect ->
@@ -60,7 +58,7 @@ fun HomeScreen(
             SectionTextGreeting(
                 modifier = Modifier.fillMaxWidth()
                     .padding(top = MEDIUM_PADDING, start = MEDIUM_PADDING),
-                name = googleAuthHelper.getAccountInfo()?.displayName.orEmpty(),
+                name = "User", // TODO: Replace with actual user name
             )
         }
         SectionLogo(

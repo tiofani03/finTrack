@@ -1,8 +1,7 @@
 package com.tiooooo.fintrack
 
 interface Platform {
-    val name: String
-    val isAndroid: Boolean
+    val serverId: String
 }
 
 expect fun getPlatform(): Platform

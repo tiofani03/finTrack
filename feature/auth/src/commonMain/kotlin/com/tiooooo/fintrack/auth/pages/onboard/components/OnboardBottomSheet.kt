@@ -10,15 +10,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
 import com.tiooooo.fintrack.component.resources.IconHelper
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium18
+import dev.gitlive.firebase.auth.FirebaseUser
 
 @Composable
 fun OnboardBottomSheet(
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onGoogleResult: (Result<FirebaseUser?>) -> Unit = {},
 ) {
   Column(
     modifier = modifier,
@@ -42,12 +45,19 @@ fun OnboardBottomSheet(
         .padding(top = SMALL_PADDING),
       horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-      OnboardButton(
-        painter = IconHelper.icLoginGoogle,
-        onCardClicked = {
-
+      GoogleButtonUiContainerFirebase(
+        linkAccount = false,
+        onResult = { result ->
+          onGoogleResult.invoke(result)
         }
-      )
+      ) {
+        OnboardButton(
+          painter = IconHelper.icLoginGoogle,
+          onCardClicked = {
+            this@GoogleButtonUiContainerFirebase.onClick()
+          }
+        )
+      }
       OnboardButton(
         painter = IconHelper.icLoginApple,
         onCardClicked = {

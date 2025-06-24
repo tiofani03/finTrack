@@ -43,12 +43,8 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(compose.material)
 
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.screenModel)
-            implementation(libs.voyager.transitions)
-            implementation(libs.voyager.tabNavigator)
-            implementation(libs.voyager.bottomSheetNavigator)
-            implementation(libs.voyager.viewmodelKmp)
+            implementation(libs.auth.kmp)
+            implementation(libs.auth.firebase.kmp)
 
             implementation(project(":core:component"))
             implementation(project(":core:navigation"))
