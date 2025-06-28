@@ -1,0 +1,72 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
+plugins {
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
+}
+
+kotlin {
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "FintrackDataUser"
+            isStatic = true
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.components.resources)
+
+            implementation(libs.koin.core)
+            implementation(libs.koin.test)
+            implementation(libs.koin.compose)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization)
+
+            //datastore
+            implementation(libs.androidx.datastore.preferences.core)
+
+            // kmp firebase
+            implementation(libs.gitlive.firebase.firestore)
+            implementation(libs.auth.firebase.kmp)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
+
+        iosMain {
+            kotlin.srcDir("build/generated/ksp/metadata")
+        }
+    }
+}
+
+android {
+    namespace = "com.tiooooo.fintrack.data.user"
+    compileSdk = 36
+    defaultConfig {
+        minSdk = 24
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}

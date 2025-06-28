@@ -8,7 +8,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import fintrack.core.data.generated.resources.ic_default_wallet
 
 data class WalletItem(
-    val id: Int,
+    val id: String = "0",
     val name: String,
     val amount: String,
     val amountDouble: Double,
@@ -19,7 +19,7 @@ data class WalletItem(
 
 fun createDefaultWalletItem(): WalletItem {
     return WalletItem(
-        id = 0,
+        id = "0",
         name = "Dompet",
         amount = "Rp 0",
         amountDouble = 0.0,

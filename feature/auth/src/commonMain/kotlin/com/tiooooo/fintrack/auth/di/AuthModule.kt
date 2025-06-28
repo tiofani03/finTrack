@@ -8,5 +8,5 @@ import org.koin.dsl.module
 
 val authModule = module {
   factory<FeatureModule>(named("auth-nav")) { AuthNavigation }
-  factory { OnboardScreenModel() }
+  factory { OnboardScreenModel(get()) }
 }

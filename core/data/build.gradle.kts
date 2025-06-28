@@ -54,7 +54,7 @@ kotlin {
             api(libs.androidx.datastore.preferences.core)
 
             // kmp firebase
-            implementation(libs.gitlive.firebase.auth)
+//            implementation(libs.gitlive.firebase.auth)
             implementation(libs.gitlive.firebase.firestore)
         }
         commonTest.dependencies {

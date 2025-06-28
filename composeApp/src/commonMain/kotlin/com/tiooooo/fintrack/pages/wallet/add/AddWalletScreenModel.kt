@@ -3,9 +3,11 @@ package com.tiooooo.fintrack.pages.wallet.add
 import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.data.api.CommonRepository
 import com.tiooooo.fintrack.data.api.WalletRepository
+import com.tiooooo.fintrack.data.wallet.api.model.Wallet
+import com.tiooooo.fintrack.data.wallet.api.repo.WalletFirestoreRepository
 
 class AddWalletScreenModel(
-    private val walletRepository: WalletRepository,
+    private val walletRepository: WalletFirestoreRepository,
     private val commonRepository: CommonRepository,
 ) : BaseScreenModel<AddWalletState, AddWalletIntent, AddWalletEffect>(
     AddWalletState()
@@ -31,7 +33,19 @@ class AddWalletScreenModel(
         when (intent) {
             is AddWalletIntent.OnWalletAdded -> {
                 val wallet = intent.wallet
-                walletRepository.insertWallet(wallet)
+                walletRepository.createWallet(
+                    wallet = Wallet(
+                        name = wallet.name,
+                        balance = wallet.balance,
+                        color = wallet.color,
+                    ),
+                    onSuccess = {
+
+                    },
+                    onError = { errorMessage ->
+
+                    }
+                )
                 sendEffect(AddWalletEffect.AddWallet)
             }
 

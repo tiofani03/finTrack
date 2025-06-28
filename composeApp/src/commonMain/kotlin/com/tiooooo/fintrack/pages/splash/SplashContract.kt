@@ -6,8 +6,7 @@ sealed interface SplashEffect {
 }
 
 sealed interface SplashIntent {
-    data object NavigateToOnboard : SplashIntent
-    data object NavigateToDashboard : SplashIntent
+    data object CheckLoggedIn : SplashIntent
 }
 
 data class SplashState(
