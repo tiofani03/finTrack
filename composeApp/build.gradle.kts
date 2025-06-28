@@ -46,6 +46,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.koin.core)
 
+            implementation(libs.auth.kmp)
+            implementation(libs.auth.firebase.kmp)
+
             implementation(project(":core:component"))
             implementation(project(":core:data"))
             implementation(project(":core:navigation"))
@@ -53,8 +56,8 @@ kotlin {
             implementation(project(":feature:auth"))
             implementation(project(":feature:dashboard"))
 
-            implementation(libs.auth.kmp)
-            implementation(libs.auth.firebase.kmp)
+            implementation(project(":data:user"))
+            implementation(project(":data:wallet"))
         }
     }
 }

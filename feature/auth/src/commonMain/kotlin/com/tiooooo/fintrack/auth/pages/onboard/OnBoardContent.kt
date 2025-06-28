@@ -37,6 +37,7 @@ import com.tiooooo.fintrack.component.theme.primaryDark
 import com.tiooooo.fintrack.component.theme.primaryLight
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium20
+import com.tiooooo.fintrack.navigation.rememberNavHelper
 import kotlinx.coroutines.delay
 import multiplatform.network.cmptoast.ToastDuration
 import multiplatform.network.cmptoast.ToastGravity
@@ -48,6 +49,7 @@ fun OnboardContent(
   modifier: Modifier = Modifier,
   onboardScreenModel: OnboardScreenModel,
 ) {
+  val nav = rememberNavHelper()
   val listOfImages = onboardScreenModel.listOfImages
   val listOfText = onboardScreenModel.listOfText
 
@@ -62,6 +64,10 @@ fun OnboardContent(
             gravity = ToastGravity.Bottom,
             duration = ToastDuration.Short
           )
+        }
+
+        is OnBoardEffect.NavigateToDashboard -> {
+          nav.replaceAll("/dashboard")
         }
 
         else -> Unit
@@ -165,7 +171,7 @@ fun OnboardContent(
             ),
           onGoogleResult = { result ->
             result.onSuccess {
-              onboardScreenModel.dispatch(OnBoardIntent.ShowSuccessToast("Berhasil masuk dengan akun Google!"))
+              onboardScreenModel.dispatch(OnBoardIntent.RegisterSuccess(it))
             }.onFailure { error ->
               onboardScreenModel.dispatch(OnBoardIntent.ShowToast(error.message.orEmpty()))
             }

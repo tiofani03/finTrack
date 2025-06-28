@@ -10,7 +10,7 @@ auth = "2.3.0-beta02"
 cmptoast = "1.0.4"
 compose-multiplatform = "1.8.0"
 datastorePreferencesCore = "1.1.0"
-gitlive = "1.8.0"
+gitlive = "2.1.0"
 googleGms = "4.4.2"
 imageLoader = "1.8.1"
 koin = "4.0.0"
@@ -24,6 +24,7 @@ playServicesAuth = "21.0.0"
 pullrefresh = "1.4.0-beta03"
 room = "2.7.0"
 sqlite = "2.5.0"
+serialization = "1.8.0"
 vico = "2.1.2"
 voyager = "1.1.0-beta03"
 
@@ -60,6 +61,7 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 material3-window-size-class1 = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "material3WindowSizeClass" }
 

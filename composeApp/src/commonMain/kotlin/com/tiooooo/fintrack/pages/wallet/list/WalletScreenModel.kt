@@ -3,9 +3,10 @@ package com.tiooooo.fintrack.pages.wallet.list
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.data.api.WalletRepository
+import com.tiooooo.fintrack.data.wallet.api.repo.WalletFirestoreRepository
 
 class WalletScreenModel(
-    private val walletRepository: WalletRepository,
+    private val walletRepository: WalletFirestoreRepository,
 ) : BaseScreenModel<WalletState, WalletIntent, WalletEffect>(WalletState()) {
 
     init {

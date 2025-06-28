@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-
 }
 
 kotlin {
@@ -48,6 +47,8 @@ kotlin {
 
             implementation(project(":core:component"))
             implementation(project(":core:navigation"))
+
+            implementation(project(":data:user"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

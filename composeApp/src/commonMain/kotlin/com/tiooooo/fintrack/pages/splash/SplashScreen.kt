@@ -65,11 +65,9 @@ fun SplashScreen(
     setTitleVisible(true)
     delay(250)
     setSubtitleVisible(true)
-    delay(500)
+    delay(800)
 
-    splashScreenModel.dispatch(
-      SplashIntent.NavigateToOnboard
-    )
+    splashScreenModel.dispatch(SplashIntent.CheckLoggedIn)
   }
 
   // Handle navigation effect
@@ -81,7 +79,7 @@ fun SplashScreen(
         }
 
         is SplashEffect.NavigateToDashboard -> {
-          navigator.replaceAll("/auth/onboard")
+          navigator.replaceAll("/dashboard")
         }
       }
     }
@@ -140,7 +138,7 @@ fun SplashScreen(
         modifier = Modifier
           .align(Alignment.BottomCenter)
           .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING),
-        text = "Versi 1.0.0 " + getPlatform().serverId,
+        text = "Versi 1.0.0 ",
         style = textMedium12().copy(
           fontWeight = FontWeight.Normal,
           color = Color.White

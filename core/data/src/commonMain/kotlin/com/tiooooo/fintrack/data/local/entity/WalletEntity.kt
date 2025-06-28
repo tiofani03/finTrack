@@ -23,7 +23,7 @@ data class WalletEntity(
 )
 
 fun WalletEntity?.toWalletItem() = WalletItem(
-    id = this?.id?.toInt() ?: 0,
+    id = "",
     name = this?.name ?: "Dompet",
     amount = this?.balance.toString(),
     amountDouble = this?.balance ?: 0.0,

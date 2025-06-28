@@ -20,6 +20,7 @@ fun initKoin(
       platformModule(),
       localModule,
       repositoryModule,
+      *dataModules.toTypedArray(),
       dispatcherModule,
       *pagesModule.toTypedArray(),
       navigationModule,

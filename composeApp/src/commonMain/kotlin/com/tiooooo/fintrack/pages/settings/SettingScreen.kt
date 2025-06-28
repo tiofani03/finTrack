@@ -53,7 +53,6 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium16
-import com.tiooooo.fintrack.pages.onboard.OnboardRoute
 import com.tiooooo.fintrack.pages.settings.component.ChooseThemeDialog
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.ic_login_google
@@ -72,7 +71,7 @@ fun SettingScreen(
         settingScreenModel.effect.collect { effect ->
             when (effect) {
                 is SettingEffect.NavigateToLogin -> {
-                    navigator.replaceAll(OnboardRoute)
+
                 }
             }
         }

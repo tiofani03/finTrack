@@ -30,7 +30,10 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 include(":core:component")
+include(":data:transaction")
 include(":core:data")
+include(":data:user")
+include(":data:wallet")
 include(":core:navigation")
 include(":feature:auth")
 include(":feature:dashboard")

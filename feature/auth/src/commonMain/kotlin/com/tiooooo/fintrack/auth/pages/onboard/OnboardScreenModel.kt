@@ -1,9 +1,15 @@
 package com.tiooooo.fintrack.auth.pages.onboard
 
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.component.resources.IconHelper
+import com.tiooooo.fintrack.data.user.api.repo.UserRepository
+import dev.gitlive.firebase.auth.FirebaseUser
+import kotlinx.coroutines.launch
 
-class OnboardScreenModel :
+class OnboardScreenModel(
+  private val userRepository: UserRepository,
+) :
   BaseScreenModel<OnboardState, OnBoardIntent, OnBoardEffect>(OnboardState()) {
   val listOfImages = listOf(
     IconHelper.icOnBoardSort,
@@ -36,9 +42,33 @@ class OnboardScreenModel :
         }
         sendEffect(OnBoardEffect.ShowToast(message))
       }
-      is OnBoardIntent.ShowSuccessToast -> sendEffect(OnBoardEffect.ShowToast(intent.message))
+
+      is OnBoardIntent.RegisterSuccess -> registerUser(intent.user)
       is OnBoardIntent.NavigateToDashboard -> sendEffect(OnBoardEffect.NavigateToDashboard)
       else -> Unit
+    }
+  }
+
+  private fun registerUser(user: FirebaseUser?) {
+    screenModelScope.launch {
+      userRepository.createUser(
+        user = user,
+        onSuccess = {
+          launch {
+            sendEffect(OnBoardEffect.ShowToast("User registered successfully."))
+            sendEffect(OnBoardEffect.NavigateToDashboard)
+          }
+        },
+        onError = { message ->
+          launch {
+            if (message == "already exists") {
+              sendEffect(OnBoardEffect.NavigateToDashboard)
+            } else {
+              sendEffect(OnBoardEffect.ShowToast("Failed to register user: $message"))
+            }
+          }
+        }
+      )
     }
   }
 }
