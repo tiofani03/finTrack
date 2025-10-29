@@ -67,7 +67,7 @@ fun SplashScreen(
     setSubtitleVisible(true)
     delay(800)
 
-    splashScreenModel.dispatch(SplashIntent.CheckLoggedIn)
+//    splashScreenModel.dispatch(SplashIntent.CheckLoggedIn)
   }
 
   // Handle navigation effect

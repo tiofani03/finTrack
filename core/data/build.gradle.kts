@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
 
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidxRoom)
@@ -53,9 +54,9 @@ kotlin {
             //datastore
             api(libs.androidx.datastore.preferences.core)
 
-            // kmp firebase
-//            implementation(libs.gitlive.firebase.auth)
             implementation(libs.gitlive.firebase.firestore)
+            implementation(libs.gitlive.firebase.config)
+            implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

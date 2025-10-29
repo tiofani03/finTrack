@@ -55,6 +55,7 @@ kotlin {
 
             implementation(project(":feature:auth"))
             implementation(project(":feature:dashboard"))
+            implementation(project(":feature:wallet"))
 
             implementation(project(":data:user"))
             implementation(project(":data:wallet"))
@@ -97,6 +98,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -104,5 +106,9 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+}
+
+dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 

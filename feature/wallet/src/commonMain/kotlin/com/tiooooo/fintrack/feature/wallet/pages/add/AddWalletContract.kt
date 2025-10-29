@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.wallet.add
+package com.tiooooo.fintrack.feature.wallet.pages.add
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb

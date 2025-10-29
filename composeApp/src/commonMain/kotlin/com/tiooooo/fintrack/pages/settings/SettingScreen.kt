@@ -88,7 +88,7 @@ fun SettingScreen(
             BasicTopBarTitle(
                 modifier = Modifier
                     .wrapContentSize(),
-                title = "Settings",
+                title = state.settingTitle,
             )
             LazyColumn(
                 modifier = Modifier
@@ -106,14 +106,16 @@ fun SettingScreen(
                 item { SectionList(title = "Bantuan", items = getDummyHelpItems()) }
                 item { SectionList(title = "Kebijakan dan Privasi", items = getTermAndCondition()) }
                 item {
-                    SectionList(
-                        title = "Lainnya",
-                        items = getOtherSettings(),
-                        onItemClicked = { item ->
-                            item.intent?.let {
-                                settingScreenModel.dispatch(it)
-                            }
-                        })
+                    if (state.isEnableDarkMode) {
+                        SectionList(
+                            title = "Lainnya",
+                            items = getOtherSettings(),
+                            onItemClicked = { item ->
+                                item.intent?.let {
+                                    settingScreenModel.dispatch(it)
+                                }
+                            })
+                    }
                 }
                 item {
                     SectionList(

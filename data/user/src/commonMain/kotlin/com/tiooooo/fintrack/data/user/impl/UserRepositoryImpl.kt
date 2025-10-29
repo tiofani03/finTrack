@@ -31,7 +31,7 @@ class UserRepositoryImpl : UserRepository {
 
       val snapshot = userDoc.get()
       if (snapshot.exists) {
-        onError("User already exists")
+        onError("already exists")
         return
       }
 

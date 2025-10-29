@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.wallet.add
+package com.tiooooo.fintrack.feature.wallet.pages.add
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,7 +46,12 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.data.local.entity.WalletEntity
 import com.tiooooo.fintrack.data.model.wallet.createDefaultWalletItem
 import com.tiooooo.fintrack.data.utils.timeNow
-import com.tiooooo.fintrack.pages.wallet.components.WalletCardItem
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletEffect.AddWallet
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletAdded
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletAmountChanged
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletColorChanged
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletNameChanged
+import com.tiooooo.fintrack.feature.wallet.pages.components.WalletCardItem
 import multiplatform.network.cmptoast.ToastDuration
 import multiplatform.network.cmptoast.ToastGravity
 import multiplatform.network.cmptoast.showToast
@@ -63,7 +68,7 @@ fun AddWalletScreen(
     LaunchedEffect(Unit) {
         screenModel.effect.collect {
             when (it) {
-                is AddWalletEffect.AddWallet -> {
+                is AddWallet -> {
                     showToast(
                         message = "Dompet berhasil ditambahkan",
                         gravity = ToastGravity.Bottom,
@@ -130,7 +135,7 @@ fun AddWalletScreen(
                                     shape = CircleShape
                                 )
                                 .clickable {
-                                    screenModel.dispatch(AddWalletIntent.OnWalletColorChanged(color))
+                                    screenModel.dispatch(OnWalletColorChanged(color))
                                 }
                         )
                     }
@@ -139,7 +144,7 @@ fun AddWalletScreen(
                 StringTextField(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = MEDIUM_PADDING),
                     value = state.walletName,
-                    onValueChange = { screenModel.dispatch(AddWalletIntent.OnWalletNameChanged(it)) },
+                    onValueChange = { screenModel.dispatch(OnWalletNameChanged(it)) },
                     placeHolderText = "Cth: Cash",
                     labelText = "Nama Dompet",
                     maxChar = 20
@@ -150,7 +155,7 @@ fun AddWalletScreen(
                         .padding(top = SMALL_PADDING)
                         .padding(horizontal = MEDIUM_PADDING),
                     value = state.walletAmount,
-                    onValueChange = { screenModel.dispatch(AddWalletIntent.OnWalletAmountChanged(it)) },
+                    onValueChange = { screenModel.dispatch(OnWalletAmountChanged(it)) },
                     placeHolderText = "Rp 0",
                     labelText = "Saldo Saat ini",
                 )
@@ -164,7 +169,7 @@ fun AddWalletScreen(
                     .padding(MEDIUM_PADDING),
                 onClick = {
                     screenModel.dispatch(
-                        AddWalletIntent.OnWalletAdded(
+                        OnWalletAdded(
                             WalletEntity(
                                 name = state.walletName,
                                 balance = state.walletAmount.toDoubleOrNull() ?: 0.0,

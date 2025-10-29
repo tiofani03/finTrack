@@ -7,6 +7,8 @@ sealed interface SettingEffect {
 data class SettingState(
     val activeTheme: String = "",
     val isShowDialogTheme: Boolean = false,
+    val settingTitle: String = "",
+    val isEnableDarkMode: Boolean = false,
 )
 
 sealed interface SettingIntent {
