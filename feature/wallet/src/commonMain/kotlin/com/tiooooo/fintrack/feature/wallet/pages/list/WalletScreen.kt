@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.wallet.list
+package com.tiooooo.fintrack.feature.wallet.pages.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +34,11 @@ import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium20
 import com.tiooooo.fintrack.data.utils.formatRupiah
-import com.tiooooo.fintrack.pages.wallet.add.AddWalletRoute
-import com.tiooooo.fintrack.pages.wallet.components.WalletCardAddItem
-import com.tiooooo.fintrack.pages.wallet.components.WalletCardItem
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletRoute
+import com.tiooooo.fintrack.feature.wallet.pages.components.WalletCardAddItem
+import com.tiooooo.fintrack.feature.wallet.pages.components.WalletCardItem
+import com.tiooooo.fintrack.feature.wallet.pages.list.WalletEffect.NavigateToAddWallet
+import com.tiooooo.fintrack.feature.wallet.pages.list.WalletIntent.OnAddWalletClicked
 
 @Composable
 fun WalletScreen(
@@ -50,7 +52,7 @@ fun WalletScreen(
     LaunchedEffect(Unit) {
         walletScreenModel.effect.collect { effect ->
             when (effect) {
-                is WalletEffect.NavigateToAddWallet -> {
+                is NavigateToAddWallet -> {
                     navigator.push(AddWalletRoute())
                 }
 
@@ -142,7 +144,7 @@ fun WalletScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(EXTRA_SMALL_PADDING),
-                            onAddWalletClicked = { walletScreenModel.dispatch(WalletIntent.OnAddWalletClicked) }
+                            onAddWalletClicked = { walletScreenModel.dispatch(OnAddWalletClicked) }
                         )
                     }
                 }

@@ -34,6 +34,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.component.bottomNavigation.BottomNavItem
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
+import com.tiooooo.fintrack.feature.wallet.pages.list.WalletScreen
+import com.tiooooo.fintrack.feature.wallet.pages.list.WalletScreenModel
 import com.tiooooo.fintrack.pages.home.HomeScreen
 import com.tiooooo.fintrack.pages.home.HomeScreenModel
 import com.tiooooo.fintrack.pages.settings.SettingScreen
@@ -41,8 +43,6 @@ import com.tiooooo.fintrack.pages.settings.SettingScreenModel
 import com.tiooooo.fintrack.pages.transaction.list.TransactionScreen
 import com.tiooooo.fintrack.pages.transaction.list.TransactionListScreenModel
 import com.tiooooo.fintrack.pages.transaction.add.AddTransactionRoute
-import com.tiooooo.fintrack.pages.wallet.list.WalletScreen
-import com.tiooooo.fintrack.pages.wallet.list.WalletScreenModel
 
 @Composable
 fun DashboardScreen(

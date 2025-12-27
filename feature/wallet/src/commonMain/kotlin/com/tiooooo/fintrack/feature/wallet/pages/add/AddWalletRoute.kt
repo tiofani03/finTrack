@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.wallet.add
+package com.tiooooo.fintrack.feature.wallet.pages.add
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -8,11 +8,12 @@ import cafe.adriel.voyager.koin.koinScreenModel
 
 class AddWalletRoute : Screen {
 
-    @Composable
-    override fun Content() {
-        AddWalletScreen(
-            modifier = Modifier.fillMaxSize(),
-            screenModel = koinScreenModel()
-        )
-    }
+  @Composable
+  override fun Content() {
+
+    AddWalletScreen(
+      modifier = Modifier.fillMaxSize(),
+      screenModel = koinScreenModel(),
+    )
+  }
 }

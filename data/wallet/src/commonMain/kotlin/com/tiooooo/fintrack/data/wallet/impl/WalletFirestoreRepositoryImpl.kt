@@ -57,6 +57,7 @@ class WalletFirestoreRepositoryImpl : WalletFirestoreRepository {
       }
       onSuccess(wallets)
     } catch (e: Exception) {
+      println("Iin get wallets error: ${e.message}")
       onError(e.message ?: "Gagal mengambil daftar dompet")
     }
   }

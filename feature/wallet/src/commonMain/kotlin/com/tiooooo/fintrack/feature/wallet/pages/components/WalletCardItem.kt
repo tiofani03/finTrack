@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.wallet.components
+package com.tiooooo.fintrack.feature.wallet.pages.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -37,14 +37,8 @@ import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium16
-import com.tiooooo.fintrack.data.local.entity.WalletEntity
 import com.tiooooo.fintrack.data.model.wallet.WalletItem
 import com.tiooooo.fintrack.data.utils.formatRupiah
-import com.tiooooo.fintrack.data.utils.formatToReadableString
-import fintrack.composeapp.generated.resources.Res
-import fintrack.composeapp.generated.resources.ic_login_google
-import kotlinx.datetime.LocalDateTime
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

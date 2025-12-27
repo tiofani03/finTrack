@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.component.utils.ScrollStateManager
 import com.tiooooo.fintrack.data.impl.DatastoreRepository
+import com.tiooooo.fintrack.data.utils.RemoteConfigKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -36,12 +37,23 @@ class SettingScreenModel(
         when (intent) {
             is SettingIntent.InitProfile -> {
                 val theme = datastoreRepository.themeApplication.first()
-                setState { it.copy(activeTheme = theme) }
+                val isDarkMode =
+                    datastoreRepository.isFeatureEnabled(RemoteConfigKey.IS_ENABLE_DARK_MODE)
+                val settingTitle =
+                    datastoreRepository.stringRemoteConfigValue.first()
+                setState {
+                    it.copy(
+                        activeTheme = theme,
+                        isEnableDarkMode = isDarkMode,
+                        settingTitle = settingTitle
+                    )
+                }
             }
 
             is SettingIntent.UpdateTheme -> {
                 datastoreRepository.setThemeApplication(intent.value)
             }
+
             is SettingIntent.ExecuteLogout -> {
                 sendEffect(SettingEffect.NavigateToLogin)
             }

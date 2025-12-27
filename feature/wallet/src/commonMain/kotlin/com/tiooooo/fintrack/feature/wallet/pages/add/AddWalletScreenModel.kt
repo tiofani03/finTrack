@@ -1,19 +1,27 @@
-package com.tiooooo.fintrack.pages.wallet.add
+package com.tiooooo.fintrack.feature.wallet.pages.add
 
 import com.tiooooo.fintrack.component.base.BaseScreenModel
 import com.tiooooo.fintrack.data.api.CommonRepository
 import com.tiooooo.fintrack.data.api.WalletRepository
 import com.tiooooo.fintrack.data.wallet.api.model.Wallet
 import com.tiooooo.fintrack.data.wallet.api.repo.WalletFirestoreRepository
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletEffect.AddWallet
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.Initial
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletAdded
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletAmountChanged
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletColorChanged
+import com.tiooooo.fintrack.feature.wallet.pages.add.AddWalletIntent.OnWalletNameChanged
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class AddWalletScreenModel(
     private val walletRepository: WalletFirestoreRepository,
     private val commonRepository: CommonRepository,
+    private val walletRefreshFlow: MutableSharedFlow<Unit>,
 ) : BaseScreenModel<AddWalletState, AddWalletIntent, AddWalletEffect>(
     AddWalletState()
 ) {
     init {
-        dispatch(AddWalletIntent.Initial)
+        dispatch(Initial)
     }
 
     override fun reducer(state: AddWalletState, intent: AddWalletIntent): AddWalletState {
@@ -22,16 +30,16 @@ class AddWalletScreenModel(
 
     private fun addWalletReducer(state: AddWalletState, intent: AddWalletIntent): AddWalletState {
         return when (intent) {
-            is AddWalletIntent.OnWalletNameChanged -> state.copy(walletName = intent.name)
-            is AddWalletIntent.OnWalletAmountChanged -> state.copy(walletAmount = intent.amount)
-            is AddWalletIntent.OnWalletColorChanged -> state.copy(walletColor = intent.color)
+            is OnWalletNameChanged -> state.copy(walletName = intent.name)
+            is OnWalletAmountChanged -> state.copy(walletAmount = intent.amount)
+            is OnWalletColorChanged -> state.copy(walletColor = intent.color)
             else -> state
         }
     }
 
     override suspend fun handleIntentSideEffect(intent: AddWalletIntent) {
         when (intent) {
-            is AddWalletIntent.OnWalletAdded -> {
+            is OnWalletAdded -> {
                 val wallet = intent.wallet
                 walletRepository.createWallet(
                     wallet = Wallet(
@@ -40,16 +48,16 @@ class AddWalletScreenModel(
                         color = wallet.color,
                     ),
                     onSuccess = {
-
+                        walletRefreshFlow.tryEmit(Unit)
                     },
                     onError = { errorMessage ->
 
                     }
                 )
-                sendEffect(AddWalletEffect.AddWallet)
+                sendEffect(AddWallet)
             }
 
-            is AddWalletIntent.Initial -> {
+            is Initial -> {
                 val colorOptions = commonRepository.getAllColors()
                 setState { state -> state.copy(colorOptions = colorOptions) }
             }

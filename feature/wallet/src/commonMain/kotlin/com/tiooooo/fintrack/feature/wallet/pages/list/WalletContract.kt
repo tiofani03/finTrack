@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.wallet.list
+package com.tiooooo.fintrack.feature.wallet.pages.list
 
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import com.tiooooo.fintrack.data.model.wallet.WalletItem
