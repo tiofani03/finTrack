@@ -11,18 +11,6 @@ class OnboardScreenModel(
   private val userRepository: UserRepository,
 ) :
   BaseScreenModel<OnboardState, OnBoardIntent, OnBoardEffect>(OnboardState()) {
-  val listOfImages = listOf(
-    IconHelper.icOnBoardSort,
-    IconHelper.icOnboardData,
-    IconHelper.icOnboardHappy
-  )
-
-  val listOfText = listOf(
-    "Ini teks pertama",
-    "Ini teks kedua",
-    "Ini teks ketiga",
-  )
-
   override fun reducer(state: OnboardState, intent: OnBoardIntent): OnboardState {
     return when (intent) {
       is OnBoardIntent.SetLoading -> state.copy(isLoading = intent.isLoading)
