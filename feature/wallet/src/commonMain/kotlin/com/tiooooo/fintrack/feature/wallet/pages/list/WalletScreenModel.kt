@@ -2,7 +2,6 @@ package com.tiooooo.fintrack.feature.wallet.pages.list
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.tiooooo.fintrack.component.base.BaseScreenModel
-import com.tiooooo.fintrack.data.api.WalletRepository
 import com.tiooooo.fintrack.data.wallet.api.repo.WalletFirestoreRepository
 import com.tiooooo.fintrack.feature.wallet.pages.list.WalletIntent.LoadData
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,11 +21,7 @@ class WalletScreenModel(
         }
     }
 
-    override fun reducer(state: WalletState, intent: WalletIntent): WalletState {
-        return walletReducer(state, intent)
-    }
-
-    override suspend fun handleIntentSideEffect(intent: WalletIntent) {
+    override suspend fun handleIntent(intent: WalletIntent) {
         handleWalletIntentSideEffect(
             intent = intent,
             walletRepository = walletRepository,
@@ -34,6 +29,7 @@ class WalletScreenModel(
             sendEffect = { sendEffect(it) },
             currentState = { state.value },
             screenModelScope = screenModelScope,
+            reducer = ::walletReducer,
         )
     }
 }

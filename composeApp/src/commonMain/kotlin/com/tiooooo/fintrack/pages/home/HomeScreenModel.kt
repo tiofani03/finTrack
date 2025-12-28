@@ -16,7 +16,7 @@ class HomeScreenModel(
         dispatch(HomeIntent.LoadData)
     }
 
-    override fun reducer(state: HomeState, intent: HomeIntent): HomeState {
+    fun reducer(state: HomeState, intent: HomeIntent): HomeState {
         return when (intent) {
             is HomeIntent.UpdateListState -> state.copy(listState = intent.state)
             is HomeIntent.UpdateSummaryState -> state.copy(summaryListState = intent.state)
@@ -25,7 +25,7 @@ class HomeScreenModel(
     }
 
 
-    override suspend fun handleIntentSideEffect(intent: HomeIntent) {
+    override suspend fun handleIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.LoadData -> {
                 setState { it.copy(isLoading = true) }
@@ -47,7 +47,7 @@ class HomeScreenModel(
                 }
             }
 
-            else -> Unit
+            else -> setState { reducer(it, intent) }
         }
     }
 }

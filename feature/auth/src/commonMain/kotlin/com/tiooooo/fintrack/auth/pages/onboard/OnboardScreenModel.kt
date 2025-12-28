@@ -11,14 +11,8 @@ class OnboardScreenModel(
   private val userRepository: UserRepository,
 ) :
   BaseScreenModel<OnboardState, OnBoardIntent, OnBoardEffect>(OnboardState()) {
-  override fun reducer(state: OnboardState, intent: OnBoardIntent): OnboardState {
-    return when (intent) {
-      is OnBoardIntent.SetLoading -> state.copy(isLoading = intent.isLoading)
-      else -> state
-    }
-  }
 
-  override suspend fun handleIntentSideEffect(intent: OnBoardIntent) {
+  override suspend fun handleIntent(intent: OnBoardIntent) {
     when (intent) {
       is OnBoardIntent.ShowToast -> {
         val message = if (intent.message.contains("A network error")) {
@@ -33,7 +27,7 @@ class OnboardScreenModel(
 
       is OnBoardIntent.RegisterSuccess -> registerUser(intent.user)
       is OnBoardIntent.NavigateToDashboard -> sendEffect(OnBoardEffect.NavigateToDashboard)
-      else -> Unit
+      else -> setState { intent.reduce(state.value) }
     }
   }
 

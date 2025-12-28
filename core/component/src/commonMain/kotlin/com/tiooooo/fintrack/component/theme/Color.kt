@@ -237,7 +237,7 @@ val strokeTextField = Color(0xFFDEE1EE)
 
 val onLightBackground = Color(0xFFF3F5FA)
 
-val buttonPrimaryColor = Color(0xFF0C51EF)
+val buttonPrimaryColor = Color(0xFF3B82F6)
 val buttonPrimaryTextColor = Color(0xFFFFFFFF)
 
 val buttonSecondaryColor = Color(0xFFE2EBFA)

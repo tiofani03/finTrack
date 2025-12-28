@@ -25,7 +25,7 @@ class SettingScreenModel(
         _lazyListState.value = state
     }
 
-    override fun reducer(state: SettingState, intent: SettingIntent): SettingState {
+    fun reducer(state: SettingState, intent: SettingIntent): SettingState {
         return when (intent) {
             is SettingIntent.ShowDialogTheme -> state.copy(isShowDialogTheme = intent.value)
             is SettingIntent.UpdateTheme -> state.copy(activeTheme = intent.value)
@@ -33,7 +33,7 @@ class SettingScreenModel(
         }
     }
 
-    override suspend fun handleIntentSideEffect(intent: SettingIntent) {
+    override suspend fun handleIntent(intent: SettingIntent) {
         when (intent) {
             is SettingIntent.InitProfile -> {
                 val theme = datastoreRepository.themeApplication.first()
@@ -58,7 +58,7 @@ class SettingScreenModel(
                 sendEffect(SettingEffect.NavigateToLogin)
             }
 
-            else -> Unit
+            else -> setState { reducer(it, intent) }
         }
     }
 }

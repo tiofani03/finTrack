@@ -28,11 +28,9 @@ abstract class BaseScreenModel<STATE, INTENT, EFFECT>(
         _effect.send(effect)
     }
 
-    abstract fun reducer(state: STATE, intent: INTENT): STATE
-    abstract suspend fun handleIntentSideEffect(intent: INTENT)
+    abstract suspend fun handleIntent(intent: INTENT)
 
     fun dispatch(intent: INTENT) {
-        setState { reducer(it, intent) }
-        screenModelScope.launch { handleIntentSideEffect(intent) }
+        screenModelScope.launch { handleIntent(intent) }
     }
 }

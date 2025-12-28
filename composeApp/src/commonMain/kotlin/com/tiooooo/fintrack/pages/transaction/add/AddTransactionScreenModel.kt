@@ -20,7 +20,7 @@ class AddTransactionScreenModel(
         dispatch(AddTransactionIntent.Initial)
     }
 
-    override fun reducer(state: AddTransactionState, intent: AddTransactionIntent): AddTransactionState {
+    fun reducer(state: AddTransactionState, intent: AddTransactionIntent): AddTransactionState {
         return when (intent) {
             is AddTransactionIntent.OnTransactionNameChanged -> state.copy(transactionName = intent.name)
             is AddTransactionIntent.OnTransactionAmountChanged -> state.copy(transactionAmount = intent.amount)
@@ -32,7 +32,7 @@ class AddTransactionScreenModel(
         }
     }
 
-    override suspend fun handleIntentSideEffect(intent: AddTransactionIntent) {
+    override suspend fun handleIntent(intent: AddTransactionIntent) {
         when (intent) {
             is AddTransactionIntent.Initial -> {
                 screenModelScope.launch {
@@ -55,7 +55,7 @@ class AddTransactionScreenModel(
                 sendEffect(AddTransactionEffect.AddTransaction)
             }
 
-            else -> Unit
+            else -> setState { reducer(it, intent) }
         }
     }
 }

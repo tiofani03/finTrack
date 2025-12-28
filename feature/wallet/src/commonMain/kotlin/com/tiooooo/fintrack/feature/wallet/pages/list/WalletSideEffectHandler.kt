@@ -19,6 +19,7 @@ suspend fun handleWalletIntentSideEffect(
   sendEffect: suspend (WalletEffect) -> Unit,
   currentState: () -> WalletState,
   screenModelScope: CoroutineScope,
+  reducer: (WalletState, WalletIntent) -> WalletState,
 
   ) {
   when (intent) {
@@ -69,7 +70,7 @@ suspend fun handleWalletIntentSideEffect(
       sendEffect(NavigateToAddWallet)
     }
 
-    else -> Unit
+    else -> setState { reducer(it, intent) }
   }
 }
 

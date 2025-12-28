@@ -16,9 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,12 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tiooooo.fintrack.auth.pages.onboard.components.AutoPlayPager
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.component.button.ButtonPrimary
-import com.tiooooo.fintrack.component.component.button.ButtonSecondary
 import com.tiooooo.fintrack.component.theme.EXTRA_LARGE_PADDING
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.buttonPrimaryColor
-import com.tiooooo.fintrack.component.theme.primaryDark
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium20
 import com.tiooooo.fintrack.navigation.rememberNavHelper
@@ -49,8 +44,6 @@ fun OnboardContent(
 ) {
     val nav = rememberNavHelper()
     val state by onboardScreenModel.state.collectAsStateWithLifecycle()
-
-    var isVisibleBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         onboardScreenModel.effect.collect {
@@ -72,7 +65,7 @@ fun OnboardContent(
 
     LaunchedEffect(Unit) {
         delay(500)
-        isVisibleBottomSheet = true
+        onboardScreenModel.dispatch(OnBoardIntent.SetBottomSheetVisibility(true))
     }
 
     BaseScaffold(
@@ -114,7 +107,6 @@ fun OnboardContent(
                                 .padding(horizontal = MEDIUM_PADDING),
                             text = state.screenItems[index].title,
                             style = textMedium20().copy(
-//                                color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
                             )
@@ -129,7 +121,6 @@ fun OnboardContent(
                                 ),
                             text = state.screenItems[index].description,
                             style = textMedium14().copy(
-//                                color = Color.White,
                                 fontWeight = FontWeight.Light,
                                 textAlign = TextAlign.Center,
                             ),
@@ -142,7 +133,7 @@ fun OnboardContent(
             AnimatedVisibility(
                 modifier = Modifier
                     .align(Alignment.BottomCenter),
-                visible = isVisibleBottomSheet,
+                visible = state.isVisibleBottomSheet,
                 enter = slideInVertically(
                     initialOffsetY = { fullHeight -> fullHeight },
                     animationSpec = tween(durationMillis = 500, easing = EaseOutCubic)

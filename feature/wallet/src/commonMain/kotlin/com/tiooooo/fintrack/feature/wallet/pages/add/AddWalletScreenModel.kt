@@ -24,7 +24,7 @@ class AddWalletScreenModel(
         dispatch(Initial)
     }
 
-    override fun reducer(state: AddWalletState, intent: AddWalletIntent): AddWalletState {
+    fun reducer(state: AddWalletState, intent: AddWalletIntent): AddWalletState {
         return addWalletReducer(state, intent)
     }
 
@@ -37,7 +37,7 @@ class AddWalletScreenModel(
         }
     }
 
-    override suspend fun handleIntentSideEffect(intent: AddWalletIntent) {
+    override suspend fun handleIntent(intent: AddWalletIntent) {
         when (intent) {
             is OnWalletAdded -> {
                 val wallet = intent.wallet
@@ -62,7 +62,7 @@ class AddWalletScreenModel(
                 setState { state -> state.copy(colorOptions = colorOptions) }
             }
 
-            else -> Unit
+            else -> setState { reducer(it, intent) }
         }
     }
 }

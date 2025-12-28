@@ -18,11 +18,7 @@ class SplashScreenModel(
     }
   }
 
-  override fun reducer(state: SplashState, intent: SplashIntent): SplashState {
-    return state
-  }
-
-  override suspend fun handleIntentSideEffect(intent: SplashIntent) {
+  override suspend fun handleIntent(intent: SplashIntent) {
     when (intent) {
       is SplashIntent.CheckLoggedIn -> checkUser()
     }
