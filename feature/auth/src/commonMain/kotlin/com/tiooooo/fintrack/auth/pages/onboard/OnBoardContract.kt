@@ -10,7 +10,13 @@ sealed interface OnBoardEffect {
 }
 
 sealed interface OnBoardIntent {
+  fun reduce(state: OnboardState): OnboardState = state
   data class ShowToast(val message: String) : OnBoardIntent
+  data class SetBottomSheetVisibility(val isVisible: Boolean) : OnBoardIntent{
+    override fun reduce(state: OnboardState): OnboardState {
+      return state.copy(isVisibleBottomSheet = isVisible)
+    }
+  }
   data class RegisterSuccess(val user: FirebaseUser?): OnBoardIntent
   data object NavigateToDashboard : OnBoardIntent
   data class SetLoading(val isLoading: Boolean) : OnBoardIntent
@@ -35,6 +41,7 @@ data class OnboardState(
     ),
   ),
   val isLoading: Boolean = false,
+  val isVisibleBottomSheet: Boolean = false,
 )
 
 data class ScreenOnboardItem(

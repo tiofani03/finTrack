@@ -35,14 +35,7 @@ class TransactionListScreenModel(
         }
     }
 
-    override fun reducer(
-        state: TransactionListState,
-        intent: TransactionListIntent
-    ): TransactionListState {
-        return state
-    }
-
-    override suspend fun handleIntentSideEffect(intent: TransactionListIntent) {
+    override suspend fun handleIntent(intent: TransactionListIntent) {
         when(intent){
             is TransactionListIntent.LoadData -> {
                 transactionRepository.getAllTransactions().collect { transactions ->
