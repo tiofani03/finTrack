@@ -16,7 +16,7 @@ plugins {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -85,21 +85,18 @@ val secretProperties = Properties().apply {
 
 android {
     namespace = "com.tiooooo.fintrack.core.data"
-    compileSdk = 35
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = 24
-
+        minSdk = libs.versions.android.minSdk.get().toInt()
         buildConfigField(
             "String",
             "CLIENT_ID",
             "\"${secretProperties["CLIENT_ID"]}\""
         )
     }
-    buildFeatures {
-        buildConfig = true
-    }
+    buildFeatures { buildConfig = true }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.java.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.java.get())
     }
 }
