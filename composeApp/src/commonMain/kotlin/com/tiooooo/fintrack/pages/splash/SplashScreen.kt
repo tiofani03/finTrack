@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,121 +31,114 @@ import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium20
-import com.tiooooo.fintrack.getPlatform
 import com.tiooooo.fintrack.navigation.rememberNavHelper
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.compose_multiplatform
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.painterResource
-
 
 @Composable
 fun SplashScreen(
-  modifier: Modifier = Modifier,
-  splashScreenModel: SplashScreenModel,
+    modifier: Modifier = Modifier,
+    splashScreenModel: SplashScreenModel,
 ) {
-  val navigator = rememberNavHelper()
-
-  // Animation specs
-  val fadeInSpec = fadeIn(animationSpec = tween(durationMillis = 600, easing = EaseOutCubic))
-  val slideInSpec = slideInVertically(
-    initialOffsetY = { it / 4 },
-    animationSpec = tween(durationMillis = 600, easing = EaseIn)
-  )
-  val enterAnim = fadeInSpec + slideInSpec
-
-  // Visibility state
-  val (logoVisible, setLogoVisible) = remember { mutableStateOf(false) }
-  val (titleVisible, setTitleVisible) = remember { mutableStateOf(false) }
-  val (subtitleVisible, setSubtitleVisible) = remember { mutableStateOf(false) }
-
-  // Handle animation sequence + navigation decision
-  LaunchedEffect(Unit) {
-    delay(400)
-    setLogoVisible(true)
-    delay(300)
-    setTitleVisible(true)
-    delay(250)
-    setSubtitleVisible(true)
-    delay(800)
-
-//    splashScreenModel.dispatch(SplashIntent.CheckLoggedIn)
-  }
-
-  // Handle navigation effect
-  LaunchedEffect(Unit) {
-    splashScreenModel.effect.collect { effect ->
-      when (effect) {
-        is SplashEffect.NavigateToOnboard -> {
-          navigator.replaceAll("/auth/onboard")
-        }
-
-        is SplashEffect.NavigateToDashboard -> {
-          navigator.replaceAll("/dashboard")
-        }
-      }
+    val navigator = rememberNavHelper()
+    var step by remember { mutableIntStateOf(0) }
+    val enterAnim = remember {
+        fadeIn(
+            animationSpec = tween(600, easing = EaseOutCubic)
+        ) + slideInVertically(
+            initialOffsetY = { it / 4 },
+            animationSpec = tween(600, easing = EaseIn)
+        )
     }
-  }
 
-  BaseScaffold { paddingValues ->
-    Box(
-      modifier = modifier.fillMaxSize(),
-      contentAlignment = Alignment.Center
-    ) {
-      Column(
-        modifier = Modifier
-          .fillMaxWidth()
-          .align(Alignment.Center)
-          .padding(bottom = MEDIUM_PADDING),
-      ) {
-        AnimatedVisibility(visible = logoVisible, enter = enterAnim) {
-          Image(
-            modifier = Modifier
-              .fillMaxWidth()
-              .height(200.dp)
-              .padding(horizontal = EXTRA_LARGE_PADDING),
-            painter = painterResource(Res.drawable.compose_multiplatform),
-            contentDescription = null,
-          )
-        }
-
-        AnimatedVisibility(visible = titleVisible) {
-          Text(
-            modifier = Modifier
-              .align(Alignment.CenterHorizontally)
-              .padding(vertical = SMALL_PADDING, horizontal = EXTRA_LARGE_PADDING),
-            text = "FinTrack",
-            style = textMedium20().copy(
-              fontWeight = FontWeight.Bold,
-              color = Color.White
-            ),
-          )
-        }
-
-        AnimatedVisibility(visible = subtitleVisible) {
-          Text(
-            modifier = Modifier
-              .align(Alignment.CenterHorizontally)
-              .padding(horizontal = EXTRA_LARGE_PADDING),
-            text = "Gak Cuma Gaya, Keuangan Juga Harus Keren",
-            style = textMedium12().copy(
-              fontWeight = FontWeight.Light,
-              color = Color.White
-            ),
-          )
-        }
-      }
-
-      Text(
-        modifier = Modifier
-          .align(Alignment.BottomCenter)
-          .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING),
-        text = "Versi 1.0.0 ",
-        style = textMedium12().copy(
-          fontWeight = FontWeight.Normal,
-          color = Color.White
-        ),
-      )
+    LaunchedEffect(Unit) {
+        delay(400)
+        step = 1
+        delay(300)
+        step = 2
+        delay(250)
+        step = 3
+        delay(800)
     }
-  }
+    LaunchedEffect(splashScreenModel) {
+        splashScreenModel.effect.collectLatest { effect ->
+            when (effect) {
+                SplashEffect.NavigateToOnboard ->
+                    navigator.replaceAll("/auth/onboard")
+
+                SplashEffect.NavigateToDashboard ->
+                    navigator.replaceAll("/dashboard")
+            }
+        }
+    }
+
+    BaseScaffold { paddingValues ->
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = MEDIUM_PADDING),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                AnimatedVisibility(
+                    visible = step >= 1,
+                    enter = enterAnim
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(horizontal = EXTRA_LARGE_PADDING),
+                        painter = painterResource(Res.drawable.compose_multiplatform),
+                        contentDescription = null,
+                    )
+                }
+
+                AnimatedVisibility(visible = step >= 2) {
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(vertical = SMALL_PADDING, horizontal = EXTRA_LARGE_PADDING),
+                        text = "FinTrack",
+                        style = textMedium20().copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        ),
+                    )
+                }
+
+                AnimatedVisibility(visible = step >= 3) {
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(horizontal = EXTRA_LARGE_PADDING),
+                        text = "Gak Cuma Gaya, Keuangan Juga Harus Keren",
+                        style = textMedium12().copy(
+                            fontWeight = FontWeight.Light,
+                            color = Color.White
+                        ),
+                    )
+                }
+            }
+
+            Text(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = paddingValues.calculateBottomPadding() + MEDIUM_PADDING),
+                text = "Versi 1.0.0 ",
+                style = textMedium12().copy(
+                    fontWeight = FontWeight.Normal,
+                    color = Color.White
+                ),
+            )
+        }
+    }
 }
+
