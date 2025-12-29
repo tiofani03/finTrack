@@ -43,7 +43,7 @@ fun TextFieldPassword(
     onValueChange: (String) -> Unit,
     placeHolderText: String? = null,
     labelText: String? = null,
-    onRightTextClicked: () -> Unit,
+    onRightTextClicked: (() -> Unit)? = null,
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
@@ -64,20 +64,22 @@ fun TextFieldPassword(
                 )
             }
 
-            Text(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .padding(start = 8.dp)
-                    .clickable {
-                        onRightTextClicked()
-                    },
-                text = "Lupa Password?",
-                textAlign = TextAlign.End,
-                style = textMedium14().copy(
-                    fontWeight = FontWeight.Medium,
-                    color = buttonPrimaryColor
+            onRightTextClicked?.let {
+                Text(
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(start = 8.dp)
+                        .clickable {
+                            onRightTextClicked()
+                        },
+                    text = "Lupa Password?",
+                    textAlign = TextAlign.End,
+                    style = textMedium14().copy(
+                        fontWeight = FontWeight.Medium,
+                        color = buttonPrimaryColor
+                    )
                 )
-            )
+            }
         }
         OutlinedTextField(
             modifier = Modifier

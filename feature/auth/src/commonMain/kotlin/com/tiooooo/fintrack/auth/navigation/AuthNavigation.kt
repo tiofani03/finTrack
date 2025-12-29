@@ -3,16 +3,19 @@ package com.tiooooo.fintrack.auth.navigation
 import com.tiooooo.fintrack.auth.SampleRegisterScreen
 import com.tiooooo.fintrack.auth.pages.login.LoginScreen
 import com.tiooooo.fintrack.auth.pages.onboard.OnboardScreen
+import com.tiooooo.fintrack.auth.pages.register.RegisterScreen
 import com.tiooooo.fintrack.navigation.Route
 import com.tiooooo.fintrack.navigation.RouteRegistry
 import com.tiooooo.fintrack.navigation.helper.FeatureModule
 import com.tiooooo.fintrack.navigation.parseRoute
 import com.tiooooo.fintrack.navigation.path.NavPath.AUTH_ONBOARD
+import com.tiooooo.fintrack.navigation.path.NavPath.AUTH_REGISTER
 
 object AuthNavigation : FeatureModule {
   override fun registerRoutes() {
     RouteRegistry.register(Route(AUTH_ONBOARD) { OnboardScreen })
     RouteRegistry.register(Route("/auth/login") { LoginScreen })
+    RouteRegistry.register(Route(AUTH_REGISTER) { RegisterScreen })
     RouteRegistry.register(
       Route("/auth/register/{id}") { path ->
         val args = parseRoute(path, "/auth/register/{id}")

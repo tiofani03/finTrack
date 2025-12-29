@@ -56,7 +56,7 @@ kotlin {
 
             implementation(libs.gitlive.firebase.firestore)
             implementation(libs.gitlive.firebase.config)
-            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.serialization)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

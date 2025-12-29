@@ -38,12 +38,12 @@ import com.patrykandpatrick.vico.multiplatform.common.component.rememberTextComp
 import com.patrykandpatrick.vico.multiplatform.common.fill
 import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape
 import com.patrykandpatrick.vico.multiplatform.common.shape.MarkerCorneredShape
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.roundToInt
+import kotlin.time.Clock
 
 
 @Composable
