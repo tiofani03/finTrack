@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.tiooooo.fintrack.component.theme.JakartaSansFamily
 
 @Composable
 fun textMedium10() = TextStyle(
@@ -58,5 +57,12 @@ fun textMedium22() = TextStyle(
 fun textMedium24() = TextStyle(
     fontFamily = JakartaSansFamily(),
     fontSize = 24.sp,
+    fontWeight = FontWeight.Normal
+)
+
+@Composable
+fun textMedium30() = TextStyle(
+    fontFamily = JakartaSansFamily(),
+    fontSize = 30.sp,
     fontWeight = FontWeight.Normal
 )

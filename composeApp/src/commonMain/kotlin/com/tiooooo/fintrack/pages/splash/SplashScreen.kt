@@ -31,6 +31,7 @@ import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.textMedium12
 import com.tiooooo.fintrack.component.theme.textMedium20
+import com.tiooooo.fintrack.navigation.path.NavPath.AUTH_ONBOARD
 import com.tiooooo.fintrack.navigation.rememberNavHelper
 import fintrack.composeapp.generated.resources.Res
 import fintrack.composeapp.generated.resources.compose_multiplatform
@@ -67,7 +68,7 @@ fun SplashScreen(
         splashScreenModel.effect.collectLatest { effect ->
             when (effect) {
                 SplashEffect.NavigateToOnboard ->
-                    navigator.replaceAll("/auth/onboard")
+                    navigator.replaceAll(AUTH_ONBOARD)
 
                 SplashEffect.NavigateToDashboard ->
                     navigator.replaceAll("/dashboard")

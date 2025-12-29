@@ -7,10 +7,11 @@ import com.tiooooo.fintrack.navigation.Route
 import com.tiooooo.fintrack.navigation.RouteRegistry
 import com.tiooooo.fintrack.navigation.helper.FeatureModule
 import com.tiooooo.fintrack.navigation.parseRoute
+import com.tiooooo.fintrack.navigation.path.NavPath.AUTH_ONBOARD
 
 object AuthNavigation : FeatureModule {
   override fun registerRoutes() {
-    RouteRegistry.register(Route("/auth/onboard") { OnboardScreen })
+    RouteRegistry.register(Route(AUTH_ONBOARD) { OnboardScreen })
     RouteRegistry.register(Route("/auth/login") { LoginScreen })
     RouteRegistry.register(
       Route("/auth/register/{id}") { path ->

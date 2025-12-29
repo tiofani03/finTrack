@@ -14,9 +14,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.tiooooo.fintrack.component.theme.EXTRA_SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
 import com.tiooooo.fintrack.component.theme.customTextFieldColors
@@ -38,7 +38,9 @@ fun StringTextField(
         labelText?.let {
             Text(
                 text = it,
-                style = textMedium14(),
+                style = textMedium14().copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
                 modifier = Modifier.padding(bottom = SMALL_PADDING)
             )
         }
