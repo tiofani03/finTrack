@@ -34,6 +34,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(project.dependencies.platform("com.google.firebase:firebase-bom:33.13.0"))
             implementation(libs.firebase.auth.ktx)
+            implementation(libs.firebase.performance)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

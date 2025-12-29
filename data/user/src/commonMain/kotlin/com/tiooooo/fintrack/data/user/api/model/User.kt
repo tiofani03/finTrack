@@ -1,9 +1,9 @@
 package com.tiooooo.fintrack.data.user.api.model
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Serializer
+import kotlin.time.Clock
 
 @Serializable
 data class User(

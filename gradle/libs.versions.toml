@@ -22,8 +22,7 @@ koin = "4.1.1"
 koinCompose = "4.1.1"
 kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.1"
-kotlinxDatetime = "0.6.2"
-kotlinxSerializationJson = "1.8.0"
+kotlinxDatetime = "0.7.1"
 ksp = "2.1.21-RC-2.0.0"
 material3WindowSizeClass = "1.7.3"
 playServicesAuth = "21.0.0"
@@ -53,6 +52,7 @@ auth-kmp = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "auth
 cmptoast = { module = "network.chaintech:cmptoast", version.ref = "cmptoast" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-performance = { module = "com.google.firebase:firebase-perf" }
 
 gitlive-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "gitlive" }
 gitlive-firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "gitlive" }
@@ -69,7 +69,6 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 material3-window-size-class1 = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "material3WindowSizeClass" }
 

@@ -9,6 +9,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
+import kotlin.time.Clock
 
 class UserRepositoryImpl : UserRepository {
   override fun getCurrentUserId(): String? {
@@ -90,7 +91,7 @@ class UserRepositoryImpl : UserRepository {
 
       // ==== STATS SETUP ====
       val statsCollection = userDoc.collection("stats")
-      val now = kotlinx.datetime.Clock.System.now().toString()
+      val now = Clock.System.now().toString()
 
       statsCollection.document("balance").set(
         mapOf(

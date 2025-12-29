@@ -5,7 +5,7 @@ import com.tiooooo.fintrack.data.wallet.api.repo.WalletFirestoreRepository
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class WalletFirestoreRepositoryImpl : WalletFirestoreRepository {
 
