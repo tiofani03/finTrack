@@ -24,59 +24,73 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.navigation.rememberNavHelper
+import com.tiooooo.fintrack.navigation.rememberRouteResolver
 
 class DashboardScreen : Screen {
 
   @Composable
   override fun Content() {
-    val navHelper = rememberNavHelper()
+
+    val resolver = rememberRouteResolver()
     var currentTab by rememberSaveable { mutableStateOf("/home") }
 
+    // cache Screen supaya instance sama
     val screenCache = remember {
       mutableMapOf<String, Screen>()
     }
 
-    val screen = remember(currentTab) {
-      screenCache.getOrPut(currentTab) {
-        navHelper.resolve(currentTab)
+    fun resolve(path: String): Screen =
+      screenCache.getOrPut(path) {
+        resolver.require(path)
       }
-    }
 
-    val initialScreen = remember { screenCache["/home"] ?: navHelper.resolve("/home") }
+    // SATU Navigator SAJA
+    Navigator(resolve("/home")) { navigator ->
 
-    BaseScaffold { innerPadding ->
-      Column(
-        modifier = Modifier
-          .fillMaxSize()
-          .padding(innerPadding)
-      ) {
-        Navigator(screen = initialScreen) { navigator ->
+      // ganti root screen TANPA dispose tab lama
+      LaunchedEffect(currentTab) {
+        val target = resolve(currentTab)
 
-          LaunchedEffect(screen) {
-            navigator.replace(screen)
-          }
+        if (navigator.lastItem != target) {
+          navigator.replaceAll(target)
+        }
+      }
 
+      BaseScaffold { innerPadding ->
+        Column(
+          modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+        ) {
+
+          // CONTENT TAB
           Box(modifier = Modifier.weight(1f)) {
             CurrentScreen()
           }
-        }
 
-        Row(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-          horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-          TabButton("Home", "/home", currentTab) { currentTab = it }
-          TabButton("Search", "/search", currentTab) { currentTab = it }
-          TabButton("Profile", "/profile", currentTab) { currentTab = it }
+          // BOTTOM BAR
+          Row(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+          ) {
+            TabButton("Home", "/home", currentTab) { currentTab = it }
+            TabButton("Search", "/auth/onboard", currentTab) { currentTab = it }
+            TabButton("Profile", "/profile", currentTab) { currentTab = it }
+          }
         }
       }
     }
   }
 
   @Composable
-  private fun TabButton(label: String, path: String, currentTab: String, onClick: (String) -> Unit) {
+  private fun TabButton(
+    label: String,
+    path: String,
+    currentTab: String,
+    onClick: (String) -> Unit
+  ) {
     Text(
       text = label,
       color = if (currentTab == path) Color.Blue else Color.Black,
@@ -84,6 +98,7 @@ class DashboardScreen : Screen {
     )
   }
 }
+
 
 
 

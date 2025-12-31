@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.settings
+package com.tiooooo.fintrack.feature.settings.pages.settings
 
 sealed interface SettingEffect {
     data object NavigateToLogin : SettingEffect

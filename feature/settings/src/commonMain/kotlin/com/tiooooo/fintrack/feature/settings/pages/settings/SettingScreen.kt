@@ -1,7 +1,6 @@
-package com.tiooooo.fintrack.pages.settings
+package com.tiooooo.fintrack.feature.settings.pages.settings
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,20 +15,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Help
-import androidx.compose.material.icons.automirrored.filled.HelpCenter
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.QrCodeScanner
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,15 +46,14 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.tiooooo.fintrack.component.base.BaseScaffold
 import com.tiooooo.fintrack.component.component.topBar.BasicTopBarTitle
 import com.tiooooo.fintrack.component.theme.AppTheme
+import com.tiooooo.fintrack.component.theme.ICON_CARD_SIZE
 import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 import com.tiooooo.fintrack.component.theme.SMALL_PADDING
+import com.tiooooo.fintrack.component.theme.buttonPrimaryColor
 import com.tiooooo.fintrack.component.theme.textMedium10
 import com.tiooooo.fintrack.component.theme.textMedium14
 import com.tiooooo.fintrack.component.theme.textMedium16
-import com.tiooooo.fintrack.pages.settings.component.ChooseThemeDialog
-import fintrack.composeapp.generated.resources.Res
-import fintrack.composeapp.generated.resources.ic_login_google
-import org.jetbrains.compose.resources.painterResource
+import com.tiooooo.fintrack.feature.settings.pages.settings.component.ChooseThemeDialog
 
 @Composable
 fun SettingScreen(
@@ -64,7 +61,7 @@ fun SettingScreen(
     settingScreenModel: SettingScreenModel,
 ) {
     val listState by settingScreenModel.lazyListState.collectAsState()
-    val navigator = LocalNavigator.currentOrThrow
+    LocalNavigator.currentOrThrow
     val state by settingScreenModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -102,37 +99,17 @@ fun SettingScreen(
                             .padding(horizontal = MEDIUM_PADDING)
                     )
                 }
-                item { SectionList(title = "Akun", items = getDummyAccountItems()) }
-                item { SectionList(title = "Bantuan", items = getDummyHelpItems()) }
-                item { SectionList(title = "Kebijakan dan Privasi", items = getTermAndCondition()) }
                 item {
-                    if (state.isEnableDarkMode) {
-                        SectionList(
-                            title = "Lainnya",
-                            items = getOtherSettings(),
-                            onItemClicked = { item ->
-                                item.intent?.let {
-                                    settingScreenModel.dispatch(it)
-                                }
-                            })
-                    }
+                    SectionList(
+                        modifier = Modifier.padding(top = MEDIUM_PADDING),
+                        title = "Preferences",
+                        items = getDummyHelpItems()
+                    )
                 }
                 item {
                     SectionList(
-                        title = "",
-                        items = listOf(
-                            ProfileItem(
-                                "Logout",
-                                null,
-                                null,
-                                SettingIntent.ExecuteLogout
-                            ),
-                        ),
-                        onItemClicked = { item ->
-                            item.intent?.let {
-                                settingScreenModel.dispatch(it)
-                            }
-                        }
+                        modifier = Modifier.padding(top = MEDIUM_PADDING),
+                        title = "Account", items = getTermAndCondition()
                     )
                 }
                 item { Spacer(modifier = Modifier.height(80.dp)) }
@@ -174,13 +151,13 @@ fun ProfileHeader(
                     .padding(MEDIUM_PADDING),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(Res.drawable.ic_login_google),
-                    contentDescription = "Profile Picture",
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                )
+//                Image(
+//                    painter = painterResource(Res.drawable.ic_login_google),
+//                    contentDescription = "Profile Picture",
+//                    modifier = Modifier
+//                        .size(50.dp)
+//                        .clip(CircleShape)
+//                )
                 Spacer(modifier = Modifier.width(MEDIUM_PADDING))
 
                 Column(modifier = Modifier.weight(1f)) {
@@ -233,12 +210,13 @@ fun LoyaltyCodeSection() {
 
 @Composable
 fun SectionList(
+    modifier: Modifier = Modifier,
     title: String,
     items: List<ProfileItem>,
     onItemClicked: (ProfileItem) -> Unit = { },
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
     ) {
         Text(
             modifier = Modifier.padding(start = MEDIUM_PADDING, top = SMALL_PADDING),
@@ -249,8 +227,16 @@ fun SectionList(
         )
         Spacer(modifier = Modifier.height(SMALL_PADDING))
 
-        items.forEach { item ->
-            ProfileListItem(item, onItemClicked = onItemClicked)
+        OutlinedCard(
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = MEDIUM_PADDING)
+                .clip(RoundedCornerShape(MEDIUM_PADDING)),
+            shape = RoundedCornerShape(MEDIUM_PADDING),
+            border = BorderStroke(0.dp, MaterialTheme.colorScheme.surface),
+        ) {
+            items.forEach { item ->
+                ProfileListItem(item, onItemClicked = onItemClicked)
+            }
         }
     }
 }
@@ -269,8 +255,25 @@ fun ProfileListItem(
             .padding(MEDIUM_PADDING),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        item.icon?.let {
-            Icon(imageVector = item.icon, contentDescription = item.title)
+        Box(
+            modifier = Modifier
+                .size(ICON_CARD_SIZE)
+                .clip(RoundedCornerShape(MEDIUM_PADDING))
+                .background(
+                    color =
+                        item.iconTint?.copy(0.1f)
+                            ?: MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                ),
+
+            ) {
+            item.icon?.let {
+                Icon(
+                    modifier = Modifier.padding(SMALL_PADDING),
+                    imageVector = item.icon,
+                    contentDescription = item.title,
+                    tint = item.iconTint ?: MaterialTheme.colorScheme.onSurface,
+                )
+            }
         }
         Spacer(modifier = Modifier.width(MEDIUM_PADDING))
 
@@ -279,21 +282,12 @@ fun ProfileListItem(
             style = textMedium14().copy(
                 fontWeight = FontWeight.Light
             ),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            color = item.textColor ?: Color.Unspecified
         )
 
-        if (item.actionText != null) {
-            Text(
-                text = item.actionText,
-                style = textMedium10().copy(
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(MEDIUM_PADDING))
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(horizontal = MEDIUM_PADDING, vertical = SMALL_PADDING)
-            )
+        if (item.actionContent != null) {
+            item.actionContent.invoke()
         } else {
             Icon(imageVector = Icons.Default.ChevronRight, contentDescription = "Next")
         }
@@ -304,29 +298,87 @@ fun ProfileListItem(
 data class ProfileItem(
     val title: String,
     val icon: ImageVector? = null,
-    val actionText: String? = null,
-    val intent: SettingIntent? = null
+    val textColor: Color? = null,
+    val intent: SettingIntent? = null,
+    val iconTint: Color? = null,
+    val actionContent: @Composable (() -> Unit)? = null,
 )
 
-fun getDummyAccountItems() = listOf(
-    ProfileItem("Akun Premium", Icons.Default.Star, "Upgrade"),
-)
+//fun getDummyAccountItems() = listOf(
+//    ProfileItem("Akun Premium", Icons.Default.Star, "Upgrade"),
+//)
 
 fun getDummyHelpItems() = listOf(
-    ProfileItem("Pusat Bantuan", Icons.AutoMirrored.Filled.Help),
-    ProfileItem("Tanya dan Jawab", Icons.AutoMirrored.Filled.HelpCenter)
+    ProfileItem(
+        title = "Currency",
+        icon = Icons.Filled.Money,
+        iconTint = buttonPrimaryColor,
+        actionContent = {
+            Row(
+                modifier = Modifier,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "IDR - Indonesian Rupiah",
+                    style = textMedium10().copy(
+                        fontWeight = FontWeight.Light
+                    ),
+                )
+                Icon(imageVector = Icons.Default.ChevronRight, contentDescription = "Next")
+            }
+        }
+    ),
+    ProfileItem(
+        title = "Language",
+        icon = Icons.Filled.Web,
+        iconTint = Color.Magenta,
+        actionContent = {
+            Row(
+                modifier = Modifier,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "English",
+                    style = textMedium10().copy(
+                        fontWeight = FontWeight.Light
+                    ),
+                )
+                Icon(imageVector = Icons.Default.ChevronRight, contentDescription = "Next")
+            }
+        }
+    ),
+    ProfileItem(
+        title = "Dark mode",
+        icon = Icons.Filled.DarkMode,
+        iconTint = Color.Yellow,
+        actionContent = {
+            Switch(
+                modifier = Modifier.size(24.dp),
+                checked = true,
+                onCheckedChange = { /* TODO: Handle change */ }
+            )
+        }
+    ),
 )
 
 fun getTermAndCondition() = listOf(
-    ProfileItem("Ketentuan Layanan", Icons.Default.Info),
-    ProfileItem("Kebijakan Privasi", Icons.Default.Key),
+    ProfileItem("Help & Support", Icons.Filled.Info),
+    ProfileItem(
+        title = "Logout",
+        icon = Icons.AutoMirrored.Filled.ExitToApp,
+        actionContent = {
+
+        },
+        textColor = Color.Red,
+        iconTint = Color.Red,
+    ),
 )
 
 fun getOtherSettings() = listOf(
     ProfileItem(
         "Pengaturan Tema",
         Icons.Default.DarkMode,
-        null,
-        SettingIntent.ShowDialogTheme(true)
+        textColor = null,
+        intent = SettingIntent.ShowDialogTheme(true)
     ),
 )

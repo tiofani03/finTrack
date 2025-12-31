@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.settings.component
+package com.tiooooo.fintrack.feature.settings.pages.settings.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

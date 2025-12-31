@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.settings
+package com.tiooooo.fintrack.feature.settings.pages.settings
 
 import androidx.compose.foundation.lazy.LazyListState
 import com.tiooooo.fintrack.component.base.BaseScreenModel

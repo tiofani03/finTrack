@@ -57,6 +57,7 @@ kotlin {
             implementation(project(":feature:auth"))
             implementation(project(":feature:dashboard"))
             implementation(project(":feature:wallet"))
+            implementation(project(":feature:settings"))
 
             implementation(project(":data:user"))
             implementation(project(":data:wallet"))
