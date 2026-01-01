@@ -71,7 +71,7 @@ fun SplashScreen(
                     navigator.replaceAll(AUTH_ONBOARD)
 
                 SplashEffect.NavigateToDashboard ->
-                    navigator.replaceAll(AUTH_ONBOARD)
+                    navigator.replaceAll("/dashboard")
             }
         }
     }

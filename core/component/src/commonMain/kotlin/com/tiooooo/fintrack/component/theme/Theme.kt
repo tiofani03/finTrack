@@ -1,13 +1,29 @@
 package com.tiooooo.fintrack.component.theme
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import kotlin.math.hypot
+import kotlin.math.max
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -268,5 +284,77 @@ fun FinTrackTheme(
             typography = JakartaSansTypography(),
             content = content
         )
+    }
+}
+
+@Composable
+fun CircularRevealOverlay(
+    isDark: Boolean,
+    onRevealMid: () -> Unit,
+    onFinish: () -> Unit
+) {
+    val progress = remember { Animatable(0f) }
+
+    val color = if (isDark)
+        darkScheme.background
+    else
+        lightScheme.background
+
+    LaunchedEffect(Unit) {
+        progress.animateTo(
+            1f,
+            tween(600, easing = FastOutSlowInEasing)
+        )
+        onFinish()
+    }
+
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        val maxRadius = hypot(size.width, size.height)
+
+        if (progress.value > 0.5f) {
+            onRevealMid()
+        }
+
+        drawCircle(
+            color = color,
+            radius = maxRadius * progress.value,
+            center = center
+        )
+    }
+}
+
+@Composable
+fun ThemeTransitionHost(
+    darkTheme: Boolean,
+    content: @Composable () -> Unit
+) {
+    var internalDark by remember { mutableStateOf(darkTheme) }
+    var animating by remember { mutableStateOf(false) }
+
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        FinTrackTheme(internalDark) {
+            content()
+        }
+
+        if (animating) {
+            CircularRevealOverlay(
+                isDark = darkTheme,
+                onRevealMid = {
+                    internalDark = darkTheme
+                },
+                onFinish = {
+                    animating = false
+                }
+            )
+        }
+
+        LaunchedEffect(darkTheme) {
+            if (darkTheme != internalDark) {
+                animating = true
+            }
+        }
     }
 }

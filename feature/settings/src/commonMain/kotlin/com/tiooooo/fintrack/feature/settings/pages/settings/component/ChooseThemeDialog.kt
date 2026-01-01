@@ -26,11 +26,13 @@ import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 @Composable
 fun ChooseThemeDialog(
     currentTheme: AppTheme,
+    visible: Boolean,
     onDismiss: () -> Unit,
     onConfirm: (AppTheme) -> Unit
 ) {
     var selectedTheme by remember { mutableStateOf(currentTheme) }
 
+    if (!visible) return
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
