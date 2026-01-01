@@ -14,14 +14,13 @@ import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import com.mmk.kmpauth.google.GoogleAuthCredentials
 import com.mmk.kmpauth.google.GoogleAuthProvider
 import com.tiooooo.fintrack.component.navigation.PlatformNavigatorContent
-import com.tiooooo.fintrack.component.theme.FinTrackTheme
 import com.tiooooo.fintrack.component.theme.SetupStatusBar
+import com.tiooooo.fintrack.component.theme.ThemeTransitionHost
 import com.tiooooo.fintrack.component.theme.rememberAppTheme
 import com.tiooooo.fintrack.data.impl.DatastoreRepository
 import com.tiooooo.fintrack.navigation.rememberRouteResolver
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
-
 
 @Composable
 @Preview
@@ -31,7 +30,7 @@ fun App() {
   val routeResolver = rememberRouteResolver()
 
   SetupStatusBar(darkTheme)
-  FinTrackTheme(darkTheme) {
+  ThemeTransitionHost(darkTheme) {
     var appReady by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
       GoogleAuthProvider.create(

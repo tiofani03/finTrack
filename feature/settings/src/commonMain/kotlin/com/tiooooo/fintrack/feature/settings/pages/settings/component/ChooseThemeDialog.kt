@@ -1,4 +1,4 @@
-package com.tiooooo.fintrack.pages.settings.component
+package com.tiooooo.fintrack.feature.settings.pages.settings.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,11 +26,13 @@ import com.tiooooo.fintrack.component.theme.MEDIUM_PADDING
 @Composable
 fun ChooseThemeDialog(
     currentTheme: AppTheme,
+    visible: Boolean,
     onDismiss: () -> Unit,
     onConfirm: (AppTheme) -> Unit
 ) {
     var selectedTheme by remember { mutableStateOf(currentTheme) }
 
+    if (!visible) return
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
